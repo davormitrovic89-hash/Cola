@@ -1,33 +1,36 @@
+import { createThreeHandRenderer } from './renderer-three.js';
+
 /**
- * Hand-greift-aus-dem-Bildschirm-Illusion.
+ * Controller der Hand-Illusion.
  *
- * Der Lochrand und die Hand werden gegenlaeufig zur Zeigerposition
- * verschoben/geneigt (Parallaxe). Zusaetzlich reagiert die Szene auf die
- * Geraeteneigung, falls verfuegbar.
+ * Der Lochrand kippt weiterhin per CSS gegen die Zeigerposition — das ist
+ * die Parallaxe, die dem Loch Tiefe gibt. Die Hand selbst ist eine
+ * WebGL-Szene, die derselben Eingabe folgt: Sie richtet sich zum Zeiger
+ * aus und greift zu, je naeher er der Mitte kommt.
  */
 export function initHand({
   stage = document.getElementById('hole-stage'),
   ring = document.getElementById('ring'),
-  hand = document.getElementById('hand-wrap'),
+  world = document.getElementById('hand-world'),
+  renderer = createThreeHandRenderer(),
 } = {}) {
-  if (!stage || !ring || !hand) return null;
+  if (!stage || !ring || !world) return null;
 
-  let targetRX = 0;
-  let targetRY = 0;
-  let curRX = 0;
-  let curRY = 0;
-  let targetHX = 0;
-  let targetHY = 0;
-  let curHX = 0;
-  let curHY = 0;
+  renderer.mount(world);
+
+  const target = { rx: 0, ry: 0, yaw: 0, pitch: 0, grab: 0 };
+  const current = { rx: 0, ry: 0, yaw: 0, pitch: 0, grab: 0 };
   let rafId = null;
 
   /** px/py sind normalisierte Auslenkungen im Bereich -0.5 .. 0.5 */
   function setTargets(px, py) {
-    targetRY = px * 24;
-    targetRX = -py * 24;
-    targetHX = px * 30;
-    targetHY = py * 18;
+    target.ry = px * 24;
+    target.rx = -py * 24;
+    target.yaw = px * 0.85;
+    target.pitch = -py * 0.55;
+    // Je naeher der Zeiger an der Lochmitte, desto mehr greift die Hand zu.
+    const distance = Math.min(1, Math.hypot(px, py) / 0.45);
+    target.grab = 1 - distance;
   }
 
   function onPointerMove(e) {
@@ -41,8 +44,8 @@ export function initHand({
   function onOrientation(e) {
     if (e.beta == null) return;
     setTargets(
-      Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
-      Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 30))
+      Math.max(-0.5, Math.min(0.5, (e.gamma || 0) / 45)),
+      Math.max(-0.5, Math.min(0.5, ((e.beta || 0) - 45) / 45))
     );
   }
 
@@ -52,15 +55,17 @@ export function initHand({
   function frame() {
     rafId = requestAnimationFrame(frame);
 
-    curRX += (targetRX - curRX) * 0.08;
-    curRY += (targetRY - curRY) * 0.08;
-    curHX += (targetHX - curHX) * 0.08;
-    curHY += (targetHY - curHY) * 0.08;
+    for (const key of Object.keys(target)) {
+      current[key] += (target[key] - current[key]) * 0.08;
+    }
 
-    ring.style.transform = `rotateX(${curRX}deg) rotateY(${curRY}deg)`;
-    hand.style.transform =
-      `translate(-50%, 0) translateZ(60px) rotate(-4deg) ` +
-      `translate(${curHX}px, ${curHY * 0.4}px) rotateY(${curHY * 0.3}deg)`;
+    ring.style.transform = `rotateX(${current.rx}deg) rotateY(${current.ry}deg)`;
+    renderer.setPose({
+      yaw: current.yaw,
+      pitch: current.pitch,
+      grab: current.grab,
+      reach: 1,
+    });
   }
   frame();
 
@@ -69,6 +74,7 @@ export function initHand({
       if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('deviceorientation', onOrientation);
+      renderer.dispose();
     },
   };
 }

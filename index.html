@@ -42,31 +42,16 @@
     <div class="eyebrow">3D Web Illusion — Beispiel 2</div>
     <h2>Eine Hand, die aus dem Bildschirm greift.</h2>
     <p class="lead">
-      Reines CSS: Perspektive, Parallaxe und Schatten erzeugen die Tiefe.
-      Bewege die Maus (oder das Handy) über den Kreis.
+      Ein 3D-Modell mit beweglichen Fingergelenken greift aus dem Loch heraus.
+      Bewege die Maus über den Kreis — je näher an der Mitte, desto fester
+      greift die Hand zu.
     </p>
   </div>
 
   <div id="hole-stage">
     <div class="hole-ring" id="ring"></div>
     <div class="hand-shadow"></div>
-    <div id="hand-wrap">
-      <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#f2c9a4"/>
-            <stop offset="100%" stop-color="#d8a377"/>
-          </linearGradient>
-        </defs>
-        <g fill="url(#skin)" stroke="#b9865a" stroke-width="2" stroke-linejoin="round">
-          <path d="M70,320 L70,150 Q68,120 78,110 Q86,102 96,110 Q104,118 104,140 L104,180
-                   L104,80 Q104,58 116,56 Q128,54 132,74 L132,180
-                   L132,60 Q132,38 146,38 Q158,38 160,60 L160,180
-                   L160,70 Q160,50 174,50 Q186,52 186,72 L186,190
-                   Q210,200 214,230 Q218,268 190,300 Q170,320 140,320 Z"/>
-        </g>
-      </svg>
-    </div>
+    <div id="hand-world"></div>
   </div>
   <div class="stage-hint2">Maus bewegen für den Tiefeneffekt</div>
 </section>
@@ -75,15 +60,14 @@
   <div class="eyebrow">Über dieses Demo</div>
   <h2>Ausgangspunkt für dein eigenes Projekt</h2>
   <p class="lead" style="margin:0 auto;">
-    Diese Seite ist bewusst schlank gehalten, damit du sie in Claude Code direkt
-    weiterbauen kannst — echte Produktfotos, Marken-Assets, GSAP-Scrollanimationen,
-    Beleuchtung und mehr. Den passenden Prompt findest du in der beiliegenden Datei
-    <code>PROMPT.md</code>.
+    Beide Effekte laufen in echtem 3D — keine Videos, keine Bildsequenzen.
+    Environment-Map, Hauttextur und Label werden zur Laufzeit erzeugt,
+    es wird ausser dem Label kein einziges Bild nachgeladen.
   </p>
   <div class="tag-row">
-    <div class="tag">Reines CSS 3D (Transforms)</div>
-    <div class="tag">Vanilla JS + Vite</div>
-    <div class="tag">Keine Runtime-Abhängigkeiten</div>
+    <div class="tag">Echtes WebGL (Three.js)</div>
+    <div class="tag">Prozedurale Texturen, keine Downloads</div>
+    <div class="tag">Anamorphe Billboard-Illusion</div>
     <div class="tag">Responsive</div>
   </div>
 </section>

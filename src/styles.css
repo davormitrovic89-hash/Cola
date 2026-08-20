@@ -45,7 +45,7 @@ nav a {
 }
 nav a:hover { color: var(--text); }
 
-section { position: relative; padding: 120px 6vw; overflow: hidden; }
+section { position: relative; padding: 96px 6vw; overflow: hidden; }
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -54,9 +54,9 @@ section { position: relative; padding: 120px 6vw; overflow: hidden; }
   margin-bottom: 14px;
   font-weight: 700;
 }
-h1 { font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.05; margin: 0 0 20px; }
+h1 { font-size: clamp(1.9rem, 4.1vw, 3rem); line-height: 1.08; margin: 0 0 14px; }
 h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); margin: 0 0 16px; }
-p.lead { color: var(--text-dim); max-width: 560px; font-size: 1.05rem; line-height: 1.6; }
+p.lead { color: var(--text-dim); max-width: 560px; font-size: 1rem; line-height: 1.6; }
 
 /* ---------- HERO / CAN ---------- */
 #hero {
@@ -65,7 +65,7 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1.05rem; line-heig
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 110px;
+  padding-top: 84px;
   text-align: center;
   background:
     radial-gradient(60% 60% at 80% 30%, rgba(224,38,58,0.18), transparent 60%),
@@ -82,7 +82,7 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1.05rem; line-heig
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; }
 }
-.cta-row { display: flex; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
+.cta-row { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
 .btn {
   padding: 14px 26px;
   border-radius: 999px;
@@ -113,8 +113,8 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1.05rem; line-heig
   position: relative;
   width: 100%;
   max-width: 1180px;
-  height: min(62vh, 620px);
-  margin-top: 34px;
+  height: min(52vh, 545px);
+  margin-top: 20px;
   cursor: grab;
   touch-action: pan-y;
 }
@@ -170,16 +170,12 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1.05rem; line-heig
   background: radial-gradient(circle at 50% 40%, #050506, #000 75%);
   box-shadow: inset 0 10px 40px rgba(0,0,0,0.95);
 }
-#hand-wrap {
+#hand-world {
   position: absolute;
-  left: 50%; bottom: -6%;
-  width: 46%;
-  transform-origin: bottom center;
-  transform: translate(-50%, 0) translateZ(60px) rotate(-4deg);
-  will-change: transform;
-  filter: drop-shadow(0 30px 25px rgba(0,0,0,0.55));
+  inset: -40% -25% -10%;
+  pointer-events: none;
 }
-#hand-wrap svg { width: 100%; height: auto; display: block; }
+
 .hand-shadow {
   position: absolute;
   left: 50%; bottom: 6%;
