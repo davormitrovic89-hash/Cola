@@ -17,28 +17,24 @@
 </header>
 
 <section id="hero">
-  <div class="hero-grid">
-    <div>
-      <div class="eyebrow">3D Web Illusion — Beispiel 1</div>
-      <h1>Eine Dose,<br/>die sich <span style="color:var(--accent)">wirklich</span> dreht.</h1>
-      <p class="lead">
-        Echtes 3D per CSS-Transforms (kein Video, keine Bildsequenz) — jedes Segment ein echtes 3D-Element.
-        Mit der Maus ziehen, um die Dose selbst zu drehen.
-      </p>
-      <div class="cta-row">
-        <button class="btn btn-primary" id="spin-btn">Automatisch drehen</button>
-        <a href="#hand-section" class="btn btn-ghost">Zum Hand-Effekt ↓</a>
-      </div>
-    </div>
-    <div>
-      <div id="can-stage">
-        <div id="can-world"></div>
-        <div class="can-shine"></div>
-        <div class="glow-floor"></div>
-        <div class="stage-hint">Ziehen zum Drehen</div>
-      </div>
+  <div class="hero-copy">
+    <div class="eyebrow">3D Web Illusion — Beispiel 1</div>
+    <h1>Eine Dose, die aus<br/>dem Bildschirm <span style="color:var(--accent)">kippt</span>.</h1>
+    <p class="lead">
+      Echtes 3D in WebGL — kein Video, keine Bildsequenz. Die Dose steht in einer
+      Werbetafel und lehnt sich vorne heraus, samt Schatten auf den Rahmen.
+      Zieh mit der Maus, um sie selbst zu drehen.
+    </p>
+    <div class="cta-row">
+      <button class="btn btn-primary" id="spin-btn">Automatisch drehen</button>
+      <a href="#hand-section" class="btn btn-ghost">Zum Hand-Effekt ↓</a>
     </div>
   </div>
+
+  <div id="can-stage">
+    <div id="can-world"></div>
+  </div>
+  <div class="stage-hint">Ziehen zum Drehen</div>
 </section>
 
 <section id="hand-section">
