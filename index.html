@@ -42,16 +42,16 @@
     <div class="eyebrow">3D Web Illusion — Beispiel 2</div>
     <h2>Eine Hand, die aus dem Bildschirm greift.</h2>
     <p class="lead">
-      Ein 3D-Modell mit beweglichen Fingergelenken greift aus dem Loch heraus.
-      Bewege die Maus über den Kreis — je näher an der Mitte, desto fester
-      greift die Hand zu.
+      Ein echtes Foto, freigestellt und in vier Ebenen gelegt — jede bewegt sich
+      unterschiedlich schnell. Bewege die Maus über den Kreis.
     </p>
   </div>
 
   <div id="hole-stage">
     <div class="hole-ring" id="ring"></div>
-    <div class="hand-shadow"></div>
-    <div id="hand-world"></div>
+    <div class="hand-shadow" id="hand-shadow"></div>
+    <img id="hand-photo" alt="Eine Hand, die aus einem Loch im Bildschirm nach vorne greift" />
+    <img id="hand-glint" alt="" aria-hidden="true" />
   </div>
   <div class="stage-hint2">Maus bewegen für den Tiefeneffekt</div>
 </section>
@@ -60,13 +60,13 @@
   <div class="eyebrow">Über dieses Demo</div>
   <h2>Ausgangspunkt für dein eigenes Projekt</h2>
   <p class="lead" style="margin:0 auto;">
-    Beide Effekte laufen in echtem 3D — keine Videos, keine Bildsequenzen.
-    Environment-Map, Hauttextur und Label werden zur Laufzeit erzeugt,
-    es wird ausser dem Label kein einziges Bild nachgeladen.
+    Die Dose ist echtes WebGL, die Hand ein freigestelltes Foto in gestaffelten
+    Ebenen — keine Videos, keine Bildsequenzen. Environment-Map und Beleuchtung
+    entstehen zur Laufzeit im Browser.
   </p>
   <div class="tag-row">
     <div class="tag">Echtes WebGL (Three.js)</div>
-    <div class="tag">Prozedurale Texturen, keine Downloads</div>
+    <div class="tag">Freigestelltes Foto mit Alphakanal</div>
     <div class="tag">Anamorphe Billboard-Illusion</div>
     <div class="tag">Responsive</div>
   </div>

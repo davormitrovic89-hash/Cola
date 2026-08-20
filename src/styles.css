@@ -45,7 +45,7 @@ nav a {
 }
 nav a:hover { color: var(--text); }
 
-section { position: relative; padding: 96px 6vw; overflow: hidden; }
+section { position: relative; padding: 96px 6vw; overflow: hidden; scroll-margin-top: 76px; }
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -132,6 +132,8 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1rem; line-height:
 /* ---------- HAND ILLUSION ---------- */
 #hand-section {
   min-height: 100vh;
+  padding-top: 76px;
+  padding-bottom: 76px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,15 +141,15 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1rem; line-height:
   background: var(--bg-2);
   text-align: center;
 }
-.hand-copy { max-width: 640px; margin: 0 auto 50px; }
+.hand-copy { max-width: 620px; margin: 0 auto 58px; }
 .hand-copy p.lead { margin: 0 auto; }
 
 #hole-stage {
   position: relative;
-  width: min(560px, 82vw);
+  width: min(430px, 74vw);
   aspect-ratio: 1 / 1;
   perspective: 1200px;
-  margin-bottom: 70px;
+  margin-bottom: 26px;
 }
 .hole-ring {
   position: absolute;
@@ -170,21 +172,70 @@ p.lead { color: var(--text-dim); max-width: 560px; font-size: 1rem; line-height:
   background: radial-gradient(circle at 50% 40%, #050506, #000 75%);
   box-shadow: inset 0 10px 40px rgba(0,0,0,0.95);
 }
-#hand-world {
+#hand-photo {
   position: absolute;
-  inset: -40% -25% -10%;
+  left: 50%;
+  bottom: 13%;
+  width: 86%;
+  /* Foto liegt schraeg im Original: die Finger zeigen nach oben links,
+     das Handgelenk nach unten rechts. Die Drehung stellt die Hand auf. */
+  --hand-tilt: 40deg;
+  /* Drehpunkt ist das Handgelenk, nicht die Bildmitte. Dreht man um die
+     Mitte, wandert das Gelenk beim Aufstellen aus dem Loch heraus und die
+     Hand haengt seitlich in der Luft. */
+  transform-origin: 82% 92%;
+  transform: translate(-82%, 0) rotate(var(--hand-tilt));
+  will-change: transform;
   pointer-events: none;
+  /* Das Foto ist unterbelichtet aufgenommen. Aufgehellt hebt sich die
+     Hand vom schwarzen Loch ab, statt darin zu verschwinden. */
+  filter: brightness(1.32) contrast(1.05) saturate(1.06)
+          drop-shadow(0 30px 30px rgba(0, 0, 0, 0.85));
+  /* Das Handgelenk liegt im unbedrehten Bild in der Ecke unten rechts.
+     Dort blendet es aus, damit der Arm im Dunkel des Lochs verschwindet
+     statt an einer sichtbaren Schnittkante zu enden. */
+  -webkit-mask-image: linear-gradient(to top left, transparent 3%, #000 27%);
+  mask-image: linear-gradient(to top left, transparent 3%, #000 27%);
+}
+
+/*
+  Glanzlicht auf den Fingerkuppen. Es ist dasselbe Foto ein zweites Mal,
+  stark aufgehellt und nur an dem Ende sichtbar, an dem die Finger aus
+  dem Loch treten. Ein gemalter Lichtfleck wuerde die Handform nicht
+  treffen; so folgt der Glanz exakt der echten Silhouette.
+*/
+#hand-glint {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  width: 86%;
+  transform-origin: 82% 92%;
+  transform: translate(-82%, 0) rotate(var(--hand-tilt, 40deg));
+  will-change: transform;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  filter: brightness(2.1) contrast(1.15) saturate(0.7);
+  /* Die Fingerkuppen liegen im unbedrehten Bild oben links. */
+  -webkit-mask-image: linear-gradient(to bottom right, #000 0%, rgba(0, 0, 0, 0.45) 16%, transparent 44%);
+  mask-image: linear-gradient(to bottom right, #000 0%, rgba(0, 0, 0, 0.45) 16%, transparent 44%);
 }
 
 .hand-shadow {
   position: absolute;
-  left: 50%; bottom: 6%;
-  width: 34%; height: 8%;
+  left: 50%;
+  bottom: 26%;
+  width: 52%;
+  height: 30%;
   transform: translate(-50%, 0);
-  background: radial-gradient(closest-side, rgba(0,0,0,0.65), transparent 75%);
-  filter: blur(4px);
+  transform-origin: 50% 100%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.92), transparent 72%);
+  filter: blur(22px);
   border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
+
 .stage-hint2 {
   margin-top: 22px;
   font-size: 0.75rem;
