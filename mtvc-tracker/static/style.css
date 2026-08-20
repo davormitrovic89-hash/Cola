@@ -1,0 +1,386 @@
+/* ---------------------------------------------------------------------------
+   MTVC Lead & Conversation Tracker
+   Markenwelt: warmes Off-White, Gold als einziger Akzent, Serif für Headlines,
+   Inter für UI. Viel Weissraum, keine SaaS-Buntheit. Funktion vor Dekoration.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --bg:         #f3efe9;
+  --bg-card:    #faf8f5;
+  --bg-hover:   #f7f2ea;
+  --ink:        #2c2924;
+  --ink-soft:   #6b665e;
+  --gold:       #b08d57;
+  --gold-soft:  #d8c2a0;
+  --gold-tint:  #f5eddf;
+  --border:     #e3dcd0;
+  --danger:     #a1523f;
+  --ok:         #5c7a5e;
+
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+}
+
+a { color: inherit; text-decoration: none; }
+a.link { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+/* ---------- Kopfzeile ---------- */
+
+header.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 23px;
+  letter-spacing: 0.03em;
+}
+
+.brand span { color: var(--gold); }
+
+.subtitle {
+  color: var(--ink-soft);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-block;
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: opacity .15s ease, background .15s ease;
+}
+
+.btn:hover { opacity: .88; }
+.btn-gold { background: var(--gold); }
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--border); }
+.btn-outline:hover { background: var(--bg-hover); opacity: 1; }
+.btn-quiet { background: transparent; color: var(--ink-soft); border-color: transparent; padding-left: 8px; padding-right: 8px; }
+.btn-danger { background: transparent; color: var(--danger); border-color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; opacity: 1; }
+
+/* ---------- Meldungen ---------- */
+
+.flashes { margin-bottom: 18px; }
+
+.flash {
+  background: var(--gold-tint);
+  border: 1px solid var(--gold-soft);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.error {
+  background: #f7e9e5;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+/* ---------- Kennzahlen ---------- */
+
+.stats {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.stat-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.stat-pill b {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--ink);
+  margin-right: 6px;
+}
+
+.stat-pill-due { border-color: var(--gold-soft); background: var(--gold-tint); }
+.stat-pill-due b { color: var(--gold); }
+
+/* ---------- Formulare ---------- */
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+input[type=text], input[type=search], input[type=date], select, textarea {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 1px;
+  border-color: var(--gold-soft);
+}
+
+textarea { resize: vertical; }
+
+.field { margin-bottom: 16px; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.row-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+
+/* ---------- Filterleiste ---------- */
+
+form.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 22px;
+}
+
+form.filters .field { margin-bottom: 0; }
+form.filters .field-grow { flex: 1 1 220px; }
+form.filters select { min-width: 170px; }
+
+.field-check .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 9px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.field-check input[type=checkbox] { width: auto; margin: 0; accent-color: var(--gold); }
+.field-actions { display: flex; gap: 6px; align-items: center; }
+
+/* ---------- Kontaktliste ---------- */
+
+table.contact-list {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table.contact-list th:nth-child(1) { width: 24%; }
+table.contact-list th:nth-child(2) { width: 14%; }
+table.contact-list th:nth-child(3) { width: 13%; }
+table.contact-list th:nth-child(5) { width: 21%; }
+
+table.contact-list th {
+  text-align: left;
+  padding: 13px 15px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+table.contact-list td {
+  padding: 14px 15px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: top;
+}
+
+table.contact-list tr:last-child td { border-bottom: none; }
+table.contact-list tbody tr:hover { background: var(--bg-hover); }
+
+/* Fällige Zeilen dezent hervorheben – Kante statt Flächenfarbe. */
+.row-overdue td:first-child { box-shadow: inset 3px 0 0 var(--danger); }
+.row-due td:first-child { box-shadow: inset 3px 0 0 var(--gold); }
+
+.name-cell { font-weight: 600; }
+.name-cell a { text-decoration: none; }
+.name-cell a:hover { color: var(--gold); }
+.name-cell small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.muted { color: var(--ink-soft); }
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.badge-due { color: var(--gold); border-color: var(--gold); }
+.badge-overdue { color: var(--danger); border-color: var(--danger); }
+.badge-status-Kunde { color: var(--ok); border-color: var(--ok); }
+.badge-status-Angebot { color: var(--gold); border-color: var(--gold-soft); }
+
+/* ---------- Karten / Detailansicht ---------- */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.card h2 {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card-head h2 { margin-bottom: 18px; }
+
+.interaction-form {
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Timeline ---------- */
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+
+.timeline-item {
+  border-left: 2px solid var(--gold-soft);
+  padding: 0 0 0 16px;
+  margin-bottom: 18px;
+}
+
+.timeline-item:last-child { margin-bottom: 0; }
+
+.timeline-item .meta {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 3px;
+}
+
+.timeline-item .note { white-space: pre-wrap; }
+
+/* ---------- Leerzustände ---------- */
+
+.empty-state {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--ink-soft);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.back-link:hover { color: var(--ink); }
+
+/* ---------- Mobil ---------- */
+
+@media (max-width: 700px) {
+  .wrap { padding: 20px 14px 60px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  form.filters { flex-direction: column; align-items: stretch; }
+  form.filters select { min-width: 0; }
+  /* im Spaltenlayout darf das Suchfeld nicht in die Höhe wachsen */
+  form.filters .field-grow { flex: 0 0 auto; }
+
+  /* Tabelle wird zur Kartenliste – auf dem Handy die einzige lesbare Form. */
+  table.contact-list, table.contact-list tbody, table.contact-list tr, table.contact-list td { display: block; width: 100%; }
+  table.contact-list thead { display: none; }
+  table.contact-list tr {
+    border-bottom: 1px solid var(--border);
+    padding: 6px 0;
+  }
+  table.contact-list tr:last-child { border-bottom: none; }
+  table.contact-list td { border-bottom: none; padding: 4px 15px; }
+  table.contact-list td:first-child { padding-top: 12px; }
+  table.contact-list td:last-child { padding-bottom: 12px; }
+  .row-overdue td:first-child, .row-due td:first-child { box-shadow: none; }
+  .row-overdue { border-left: 3px solid var(--danger); }
+  .row-due { border-left: 3px solid var(--gold); }
+}

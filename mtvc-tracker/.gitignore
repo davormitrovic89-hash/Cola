@@ -1,0 +1,14 @@
+# Lokale Datenbank – enthält Kontaktdaten, gehört nicht ins Repo
+*.db
+*.db-journal
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# OS
+.DS_Store

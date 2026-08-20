@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}{{ contact['name'] }} – MTVC Tracker{% endblock %}
+{% block content %}
+
+<a href="{{ url_for('index') }}" class="back-link">← Zurück zur Übersicht</a>
+
+<div class="card">
+  <div class="card-head">
+    <h2>{{ contact['name'] }}</h2>
+    {% if contact['next_step_date'] and contact['next_step_date'] <= today %}
+      <span class="badge {% if contact['next_step_date'] < today %}badge-overdue{% else %}badge-due{% endif %}">
+        Schritt fällig: {{ contact['next_step_date'] }}
+      </span>
+    {% endif %}
+  </div>
+
+  <form method="post" action="{{ url_for('update_contact', contact_id=contact['id']) }}">
+    <div class="grid-2">
+      <div class="field">
+        <label for="name">Unternehmen / Name *</label>
+        <input id="name" type="text" name="name" required value="{{ contact['name'] }}">
+      </div>
+      <div class="field">
+        <label for="segment">Segment</label>
+        <select id="segment" name="segment">
+          <option value="">– wählen –</option>
+          {% for s in segments %}
+            <option value="{{ s }}" {% if s == contact['segment'] %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="location">Standort</label>
+        <input id="location" type="text" name="location" value="{{ contact['location'] }}">
+      </div>
+      <div class="field">
+        <label for="channel">Kontaktweg</label>
+        <select id="channel" name="channel">
+          <option value="">– wählen –</option>
+          {% for c in channels %}
+            <option value="{{ c }}" {% if c == contact['channel'] %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="instagram">Instagram</label>
+        <input id="instagram" type="text" name="instagram" value="{{ contact['instagram'] }}">
+      </div>
+      <div class="field">
+        <label for="personal_connection">Persönlicher Bezug</label>
+        <input id="personal_connection" type="text" name="personal_connection" value="{{ contact['personal_connection'] }}">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        {% for s in statuses %}
+          <option value="{{ s }}" {% if s == contact['status'] %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="pain_point">Pain Point / Diagnose-Notizen</label>
+      <textarea id="pain_point" name="pain_point" rows="4">{{ contact['pain_point'] }}</textarea>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="next_step">Nächster Schritt</label>
+        <input id="next_step" type="text" name="next_step" value="{{ contact['next_step'] }}">
+      </div>
+      <div class="field">
+        <label for="next_step_date">Fällig am</label>
+        <input id="next_step_date" type="date" name="next_step_date" value="{{ contact['next_step_date'] or '' }}">
+      </div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn btn-gold" type="submit">Änderungen speichern</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Verlauf</h2>
+
+  <form method="post" action="{{ url_for('add_interaction', contact_id=contact['id']) }}" class="interaction-form">
+    <div class="grid-2">
+      <div class="field">
+        <label for="type">Art</label>
+        <select id="type" name="type">
+          {% for t in interaction_types %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="entry_date">Datum</label>
+        <input id="entry_date" type="date" name="entry_date" value="{{ today }}">
+      </div>
+    </div>
+    <div class="field">
+      <label for="note">Notiz</label>
+      <textarea id="note" name="note" rows="2" placeholder="Was ist passiert?" required></textarea>
+    </div>
+    <button class="btn btn-outline" type="submit">Eintrag hinzufügen</button>
+  </form>
+
+  {% if interactions %}
+    <ol class="timeline">
+      {% for i in interactions %}
+        <li class="timeline-item">
+          <div class="meta">{{ i['entry_date'] }} · {{ i['type'] }}</div>
+          <div class="note">{{ i['note'] }}</div>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <div class="empty-state">Noch keine Einträge.</div>
+  {% endif %}
+</div>
+
+<form method="post" action="{{ url_for('delete_contact', contact_id=contact['id']) }}"
+      onsubmit="return confirm('Kontakt wirklich löschen? Alle Verlaufseinträge gehen mit verloren.');">
+  <button class="btn btn-danger" type="submit">Kontakt löschen</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}MTVC Tracker – Übersicht{% endblock %}
+{% block content %}
+
+<div class="stats">
+  <div class="stat-pill"><b>{{ active_count }}</b> aktive Kontakte</div>
+  <div class="stat-pill {% if due_count %}stat-pill-due{% endif %}"><b>{{ due_count }}</b> fällig / überfällig</div>
+</div>
+
+<form class="filters" method="get" action="{{ url_for('index') }}">
+  <div class="field">
+    <label for="f-segment">Segment</label>
+    <select id="f-segment" name="segment" onchange="this.form.submit()">
+      <option value="">Alle</option>
+      {% for s in segments %}
+        <option value="{{ s }}" {% if s == selected_segment %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="f-status">Status</label>
+    <select id="f-status" name="status" onchange="this.form.submit()">
+      <option value="">Alle</option>
+      {% for s in statuses %}
+        <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field field-grow">
+    <label for="f-q">Suche</label>
+    <input id="f-q" type="search" name="q" value="{{ q }}" placeholder="Name, Ort, Pain Point, Notiz …">
+  </div>
+
+  <div class="field field-check">
+    <label class="checkbox">
+      <input type="checkbox" name="due_only" value="1" {% if due_only %}checked{% endif %} onchange="this.form.submit()">
+      nur fällige
+    </label>
+  </div>
+
+  <div class="field field-actions">
+    <button class="btn btn-outline" type="submit">Filtern</button>
+    {% if selected_segment or selected_status or q or due_only %}
+      <a class="btn btn-quiet" href="{{ url_for('index') }}">Zurücksetzen</a>
+    {% endif %}
+  </div>
+</form>
+
+{% if contacts %}
+<table class="contact-list">
+  <thead>
+    <tr>
+      <th>Unternehmen</th>
+      <th>Segment</th>
+      <th>Status</th>
+      <th>Pain Point</th>
+      <th>Nächster Schritt</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in contacts %}
+      {% set overdue = c['next_step_date'] and c['next_step_date'] < today and c['status'] not in closed_statuses %}
+      {% set due_today = c['next_step_date'] == today and c['status'] not in closed_statuses %}
+      <tr class="{% if overdue %}row-overdue{% elif due_today %}row-due{% endif %}">
+        <td class="name-cell">
+          <a href="{{ url_for('contact_detail', contact_id=c['id']) }}">{{ c['name'] }}</a>
+          <small>
+            {{ c['location'] or '–' }}{% if c['channel'] %} · {{ c['channel'] }}{% endif %}
+          </small>
+        </td>
+        <td>{{ c['segment'] or '–' }}</td>
+        <td><span class="badge badge-status-{{ c['status']|replace(' ', '-')|replace('/', '') }}">{{ c['status'] }}</span></td>
+        <td class="muted">
+          {% if c['pain_point'] %}{{ c['pain_point'][:70] }}{% if c['pain_point']|length > 70 %}…{% endif %}{% else %}–{% endif %}
+        </td>
+        <td>
+          {% if c['next_step'] or c['next_step_date'] %}
+            {{ c['next_step'] or '–' }}
+            {% if c['next_step_date'] %}
+              <br>
+              <span class="badge {% if overdue %}badge-overdue{% elif due_today %}badge-due{% endif %}">
+                {{ c['next_step_date'] }}{% if overdue %} · überfällig{% elif due_today %} · heute{% endif %}
+              </span>
+            {% endif %}
+          {% else %}
+            –
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+  {% if selected_segment or selected_status or q or due_only %}
+    Keine Kontakte für diesen Filter.
+    <a class="link" href="{{ url_for('index') }}">Filter zurücksetzen</a>
+  {% else %}
+    Noch keine Kontakte erfasst.
+    <a class="link" href="{{ url_for('new_contact') }}">Ersten Kontakt anlegen</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

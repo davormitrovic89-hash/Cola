@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Neuer Kontakt{% endblock %}
+{% block content %}
+
+<a href="{{ url_for('index') }}" class="back-link">← Zurück zur Übersicht</a>
+
+<div class="card">
+  <h2>Neuer Kontakt</h2>
+
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+  <form method="post" action="{{ url_for('new_contact') }}">
+    <div class="grid-2">
+      <div class="field">
+        <label for="name">Unternehmen / Name *</label>
+        <input id="name" type="text" name="name" required value="{{ form.name if form else '' }}">
+      </div>
+      <div class="field">
+        <label for="segment">Segment</label>
+        <select id="segment" name="segment">
+          <option value="">– wählen –</option>
+          {% for s in segments %}
+            <option value="{{ s }}" {% if form and form.segment == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="location">Standort</label>
+        <input id="location" type="text" name="location" placeholder="z. B. Zürich" value="{{ form.location if form else '' }}">
+      </div>
+      <div class="field">
+        <label for="channel">Kontaktweg</label>
+        <select id="channel" name="channel">
+          <option value="">– wählen –</option>
+          {% for c in channels %}
+            <option value="{{ c }}" {% if form and form.channel == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="instagram">Instagram</label>
+        <input id="instagram" type="text" name="instagram" placeholder="@handle" value="{{ form.instagram if form else '' }}">
+      </div>
+      <div class="field">
+        <label for="personal_connection">Persönlicher Bezug</label>
+        <input id="personal_connection" type="text" name="personal_connection"
+               placeholder="z. B. ehem. Kontakt aus der Zürcher Gastronomie"
+               value="{{ form.personal_connection if form else '' }}">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        {% for s in statuses %}
+          <option value="{{ s }}" {% if (form and form.status == s) or (not form and s == 'Kontaktiert') %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="first_message">Erstansprache (wird als erster Verlaufseintrag gespeichert)</label>
+      <textarea id="first_message" name="first_message" rows="3" placeholder="Text der ersten Nachricht …">{{ first_message }}</textarea>
+    </div>
+
+    <div class="field">
+      <label for="pain_point">Pain Point / erste Einschätzung</label>
+      <textarea id="pain_point" name="pain_point" rows="2" placeholder="Was fällt auf – nur was wirklich erkennbar ist">{{ form.pain_point if form else '' }}</textarea>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="next_step">Nächster Schritt</label>
+        <input id="next_step" type="text" name="next_step" placeholder="z. B. Follow-up nach 3 Tagen" value="{{ form.next_step if form else '' }}">
+      </div>
+      <div class="field">
+        <label for="next_step_date">Fällig am</label>
+        <input id="next_step_date" type="date" name="next_step_date" value="{{ (form.next_step_date if form else today) or '' }}">
+      </div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn btn-gold" type="submit">Kontakt anlegen</button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline">Abbrechen</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
