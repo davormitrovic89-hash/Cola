@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Maison Éclat — Beauty Atelier Zürich</title>
+<meta name="description" content="Maison Éclat ist das Beauty Atelier an der Augustinergasse in Zürich: Hautanalyse, Signature Facials, Farbe und Form. Termin online buchen." />
+<meta name="theme-color" content="#0b0b0f" />
+<meta name="color-scheme" content="dark" />
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_CH" />
+<meta property="og:site_name" content="Maison Éclat" />
+<meta property="og:title" content="Maison Éclat — Beauty Atelier Zürich" />
+<meta property="og:description" content="Hautanalyse, Signature Facials, Farbe und Form. Augustinergasse 12, 8001 Zürich." />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="canonical" href="https://maison-eclat.ch/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0b0f'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-style='italic' font-size='19' fill='%23e6c8a6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
+
+<!-- Performance: früh verbinden, damit Fonts + 3D-Szene schneller starten -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="dns-prefetch" href="https://prod.spline.design" />
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Playfair+Display:ital,wght@0,400..600;1,400..600&display=swap" />
+<link rel="stylesheet" href="styles.css" />
+
+<!-- GSAP + ScrollTrigger + Smooth Scroll + SplitType (alle als CDN, kein Build-Step) -->
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+<script defer src="script.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Maison Éclat",
+  "description": "Beauty Atelier für Hautbild, Farbe und Form in der Zürcher Altstadt.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Augustinergasse 12",
+    "postalCode": "8001",
+    "addressLocality": "Zürich",
+    "addressCountry": "CH"
+  },
+  "telephone": "+41 44 555 21 08",
+  "priceRange": "CHF 145–320",
+  "openingHours": ["Tu-Fr 09:00-19:00", "Sa 09:00-17:00"]
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#hero-title">Zum Inhalt springen</a>
+
+<!-- ============================================================= HEADER -->
+<header class="site-header" id="siteHeader">
+  <a class="brand" href="#top" aria-label="Maison Éclat — Startseite">
+    <span class="brand__mark" aria-hidden="true">É</span>
+    <span class="brand__name">Maison <em>Éclat</em></span>
+  </a>
+
+  <nav class="site-nav" aria-label="Hauptnavigation">
+    <a href="#features" data-scroll-to>Atelier</a>
+    <a href="#proof" data-scroll-to>Referenzen</a>
+    <a href="#pricing" data-scroll-to>Behandlungen</a>
+    <a href="#kontakt" data-scroll-to>Kontakt</a>
+  </nav>
+
+  <a class="btn btn--ghost btn--sm header-cta" href="#kontakt" data-scroll-to>Termin</a>
+</header>
+
+<!-- ============================================================= SPLINE -->
+<!--
+  3D-Szene. Auf Desktop `position: fixed` (siehe styles.css, .stage--fixed),
+  auf Mobile fliesst sie responsiv im Hero mit.
+  Eigene Szene einbinden: data-spline-url unten auf die eigene
+  https://prod.spline.design/XXXX/scene.splinecode URL setzen.
+-->
+<div class="stage" id="splineStage" aria-hidden="true"
+     data-spline-url="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode">
+  <div class="stage__inner">
+    <!-- Fallback: reines CSS-Objekt. Sichtbar bis Spline geladen ist,
+         bleibt bei blockiertem CDN / reduced motion / Save-Data dauerhaft. -->
+    <div class="orb" id="orb">
+      <div class="orb__glow"></div>
+      <div class="orb__body">
+        <span class="orb__band orb__band--a"></span>
+        <span class="orb__band orb__band--b"></span>
+        <span class="orb__band orb__band--c"></span>
+        <span class="orb__gloss"></span>
+      </div>
+      <div class="orb__ring orb__ring--1"></div>
+      <div class="orb__ring orb__ring--2"></div>
+      <div class="orb__shadow"></div>
+    </div>
+    <!-- <spline-viewer> wird von script.js hier eingehängt -->
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- =========================================================== HERO -->
+  <section class="section hero" id="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" data-hero-fade>Beauty Atelier · Zürich Altstadt</p>
+
+        <h1 class="display hero__title" id="hero-title" data-hero-fade>
+          Ihre Schönheit,<br />
+          <em>neu&nbsp;beleuchtet.</em>
+        </h1>
+
+        <p class="lead" data-hero-fade>
+          Hautanalyse, Signature Facials, Farbe und Form — an der Augustinergasse 12.
+          Ein Atelier, zwei Behandlungsräume, Ergebnisse, die auch nach acht
+          Wochen noch sichtbar sind.
+        </p>
+
+        <div class="hero__actions" data-hero-fade>
+          <a class="btn btn--primary" href="#kontakt" data-scroll-to>Termin buchen</a>
+          <a class="btn btn--ghost" href="#pricing" data-scroll-to>Behandlungen ansehen</a>
+        </div>
+
+        <p class="hero__trust" data-hero-fade>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <strong>4.9</strong> aus 380 Bewertungen · seit 2016 in Zürich
+        </p>
+      </div>
+
+      <!-- Platzhalter, der auf Mobile die Höhe der 3D-Szene reserviert -->
+      <div class="hero__stage-slot" aria-hidden="true"></div>
+    </div>
+
+    <a class="scroll-hint" href="#features" data-scroll-to>
+      <span>Scrollen</span>
+      <span class="scroll-hint__line" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <!-- ======================================================= FEATURES -->
+  <section class="section features" id="features">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Das Atelier</p>
+        <h2 class="display">Drei Dinge, die wir <em>anders</em> machen.</h2>
+      </header>
+
+      <div class="cards" id="featureCards">
+        <article class="card feature">
+          <span class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="6.5" /><path d="M15.8 15.8 21 21" /><path d="M11 8.2v5.6M8.2 11h5.6" />
+            </svg>
+          </span>
+          <h3>Diagnose vor Behandlung</h3>
+          <p>
+            Jeder Termin beginnt mit 20 Minuten Hautanalyse unter kalibriertem Licht —
+            Feuchtigkeit, Talg, Elastizität. Erst dann entscheiden wir über Wirkstoffe.
+          </p>
+          <p class="feature__meta">20 Min · in jeder Behandlung enthalten</p>
+        </article>
+
+        <article class="card feature">
+          <span class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3c2.6 2.9 4 5.4 4 7.6a4 4 0 0 1-8 0C8 8.4 9.4 5.9 12 3Z" /><path d="M12 14.6V21" /><path d="M8.5 21h7" />
+            </svg>
+          </span>
+          <h3>Wirkstoffe, die deklariert sind</h3>
+          <p>
+            Wir arbeiten mit Schweizer und französischen Laboren und legen jede
+            Konzentration offen. Sie bekommen das Protokoll für zuhause schriftlich mit.
+          </p>
+          <p class="feature__meta">Vegan · ohne Duftstoffe · dermatologisch geprüft</p>
+        </article>
+
+        <article class="card feature">
+          <span class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 20h18" /><path d="M6 20v-6M11 20V8M16 20v-9M21 20V5" /><path d="M4.5 9.5 10 4l3.5 3.5L20 2" />
+            </svg>
+          </span>
+          <h3>Ergebnis wird gemessen</h3>
+          <p>
+            Vorher/Nachher wird bei uns dokumentiert, nicht behauptet. Nach acht Wochen
+            messen wir nach — und passen das Protokoll kostenlos an.
+          </p>
+          <p class="feature__meta">Follow-up nach 8 Wochen · gratis</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== SOCIAL PROOF -->
+  <section class="section proof" id="proof">
+    <div class="wrap">
+      <header class="section-head section-head--center">
+        <p class="eyebrow">Vertrauen</p>
+        <h2 class="display">Partner, Labore und <em>Redaktionen.</em></h2>
+      </header>
+    </div>
+
+    <!-- Zwei Reihen, die beim Scrollen gegenläufig einfliegen (Parallax) -->
+    <div class="marquee" id="proofMarquee" aria-label="Partner und Medien">
+      <div class="marquee__row" data-proof-row="1">
+        <span class="logo">AURÉLIE&nbsp;LABS</span>
+        <span class="logo">NORDLICHT</span>
+        <span class="logo">LUMA&nbsp;SKIN</span>
+        <span class="logo">ATELIER&nbsp;8001</span>
+        <span class="logo">VERANDA</span>
+        <span class="logo">SEIDENHAUS</span>
+      </div>
+      <div class="marquee__row" data-proof-row="-1">
+        <span class="logo">KOSMOS&nbsp;ZH</span>
+        <span class="logo">BLANC&nbsp;&amp;&nbsp;BLANC</span>
+        <span class="logo">DERMA&nbsp;SUISSE</span>
+        <span class="logo">LIMMAT&nbsp;JOURNAL</span>
+        <span class="logo">MAISON&nbsp;NOIR</span>
+        <span class="logo">CIRCA&nbsp;19</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <figure class="quote" data-proof-quote>
+        <blockquote class="display">
+          «Das einzige Studio in Zürich, in dem mir jemand <em>erklärt</em> hat,
+          warum meine Haut tut, was sie tut.»
+        </blockquote>
+        <figcaption>
+          Nadia B. — Kundin seit 2019
+        </figcaption>
+      </figure>
+
+      <dl class="stats" data-proof-quote>
+        <div><dt>380</dt><dd>Bewertungen ⌀ 4.9</dd></div>
+        <div><dt>9</dt><dd>Jahre Augustinergasse</dd></div>
+        <div><dt>2</dt><dd>Behandlungsräume, nie mehr</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ======================================================== PRICING -->
+  <section class="section pricing" id="pricing">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Behandlungen</p>
+        <h2 class="display">Preise, die <em>vorher</em> feststehen.</h2>
+        <p class="lead lead--tight">
+          Alle Preise in CHF, inkl. Hautanalyse und Protokoll für zuhause.
+          Absagen bis 24 Stunden vorher sind kostenlos.
+        </p>
+      </header>
+
+      <div class="cards cards--pricing" id="pricingCards">
+        <article class="card price">
+          <h3 class="price__name">Signature Facial</h3>
+          <p class="price__amount"><span class="price__cur">CHF</span>180</p>
+          <p class="price__meta">60 Minuten</p>
+          <ul class="price__list">
+            <li>Hautanalyse unter kalibriertem Licht</li>
+            <li>Tiefenreinigung &amp; Enzympeeling</li>
+            <li>Wirkstoffserum nach Diagnose</li>
+            <li>Protokoll für zuhause</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" href="#kontakt" data-scroll-to>Buchen</a>
+        </article>
+
+        <article class="card price price--featured">
+          <p class="price__flag">Am häufigsten gebucht</p>
+          <h3 class="price__name">Éclat Ritual</h3>
+          <p class="price__amount"><span class="price__cur">CHF</span>320</p>
+          <p class="price__meta">120 Minuten</p>
+          <ul class="price__list">
+            <li>Alles aus dem Signature Facial</li>
+            <li>Mikroneedling oder Peel (nach Diagnose)</li>
+            <li>LED-Therapie &amp; Lymphmassage</li>
+            <li>Follow-up-Termin nach 8 Wochen inklusive</li>
+          </ul>
+          <a class="btn btn--primary btn--block" href="#kontakt" data-scroll-to>Buchen</a>
+        </article>
+
+        <article class="card price">
+          <h3 class="price__name">Colour &amp; Cut</h3>
+          <p class="price__amount"><span class="price__cur">CHF</span>145</p>
+          <p class="price__meta">90 Minuten</p>
+          <ul class="price__list">
+            <li>Farbberatung am Tageslichtfenster</li>
+            <li>Ammoniakfreie Farbe oder Gloss</li>
+            <li>Schnitt &amp; Finish</li>
+            <li>Pflegeempfehlung ohne Verkaufsdruck</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" href="#kontakt" data-scroll-to>Buchen</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== KONTAKT -->
+  <section class="section contact" id="kontakt">
+    <div class="wrap contact__grid">
+      <div class="contact__intro">
+        <p class="eyebrow">Kontakt</p>
+        <!-- Wird per SplitType zeilenweise mit Maske aufgedeckt -->
+        <h2 class="display outro-title" id="outroTitle">
+          Wir freuen uns auf Ihren Besuch an der <em>Augustinergasse.</em>
+        </h2>
+
+        <address class="contact__details">
+          <p><strong>Maison Éclat</strong><br />Augustinergasse 12<br />8001 Zürich</p>
+          <p>
+            <a href="tel:+41445552108">+41 44 555 21 08</a><br />
+            <a href="mailto:hallo@maison-eclat.ch">hallo@maison-eclat.ch</a>
+          </p>
+          <p>Di – Fr 09 – 19 Uhr<br />Sa 09 – 17 Uhr<br />So &amp; Mo geschlossen</p>
+        </address>
+      </div>
+
+      <form class="form" id="bookingForm" novalidate>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Vor- und Nachname" />
+          <p class="field__error" data-error-for="f-name" hidden>Bitte Ihren Namen angeben.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-mail">E-Mail</label>
+          <input id="f-mail" name="email" type="email" autocomplete="email" required placeholder="name@beispiel.ch" />
+          <p class="field__error" data-error-for="f-mail" hidden>Bitte eine gültige E-Mail-Adresse angeben.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-treatment">Behandlung</label>
+          <select id="f-treatment" name="treatment">
+            <option>Signature Facial — CHF 180</option>
+            <option>Éclat Ritual — CHF 320</option>
+            <option>Colour &amp; Cut — CHF 145</option>
+            <option>Ich bin mir noch nicht sicher</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f-msg">Nachricht <span class="field__opt">(optional)</span></label>
+          <textarea id="f-msg" name="message" rows="4" placeholder="Wunschtermin, Hautthema, Fragen …"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">Terminanfrage senden</button>
+
+        <p class="form__note">
+          Wir melden uns innerhalb eines Werktags. Keine Newsletter, keine Weitergabe.
+        </p>
+        <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap site-footer__inner">
+        <p>© <span id="year">2026</span> Maison Éclat — fiktives Demo-Studio, Zürich</p>
+        <nav aria-label="Rechtliches">
+          <a href="#top" data-scroll-to>Nach oben</a>
+          <a href="#kontakt" data-scroll-to>Impressum</a>
+          <a href="#kontakt" data-scroll-to>Datenschutz</a>
+        </nav>
+      </div>
+    </footer>
+  </section>
+
+</main>
+</body>
+</html>
