@@ -1,0 +1,13 @@
+{
+  "name": "cola-studio-werkzeuge",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit": "node tools/audit.mjs",
+    "bericht": "node tools/bericht.mjs",
+    "beispiel": "http-server tools/beispiel/muster-ag -p 8081 -s"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}
