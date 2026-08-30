@@ -1,0 +1,786 @@
+<title>Pitch-Stack Zürich</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --paper:      #E9EAE4;
+    --surface:    #F4F5F0;
+    --sunk:       #DFE0D9;
+    --ink:        #16181A;
+    --ink-soft:   #565C60;
+    --ink-faint:  #878D8F;
+    --rule:       #C7C9C1;
+    --rule-soft:  #D8DAD2;
+    --signal:     #C41E25;
+    --cobalt:     #1F3BC4;
+    --moss:       #3F6B4A;
+
+    --f-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --col: 1180px;
+    --gut: clamp(20px, 4vw, 56px);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:     #101214;
+      --surface:   #181B1D;
+      --sunk:      #0B0D0E;
+      --ink:       #E7E8E3;
+      --ink-soft:  #A0A6A8;
+      --ink-faint: #6E7477;
+      --rule:      #2E3336;
+      --rule-soft: #23282A;
+      --signal:    #FF4D52;
+      --cobalt:    #7C93FF;
+      --moss:      #7FB58C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:     #101214;
+    --surface:   #181B1D;
+    --sunk:      #0B0D0E;
+    --ink:       #E7E8E3;
+    --ink-soft:  #A0A6A8;
+    --ink-faint: #6E7477;
+    --rule:      #2E3336;
+    --rule-soft: #23282A;
+    --signal:    #FF4D52;
+    --cobalt:    #7C93FF;
+    --moss:      #7FB58C;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 var(--gut);
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: clamp(48px, 8vw, 96px) 0 28px;
+  }
+  .kicker {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin-bottom: clamp(24px, 5vw, 44px);
+  }
+  .kicker .dim { color: var(--ink-faint); }
+
+  .masthead h1 {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 8.4vw, 6.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    margin: 0 0 26px;
+  }
+  .masthead h1 em {
+    font-style: normal;
+    color: var(--signal);
+  }
+  .standfirst {
+    font-size: clamp(1.05rem, 2.1vw, 1.3rem);
+    line-height: 1.55;
+    max-width: 34em;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ---------- section scaffolding ---------- */
+
+  section {
+    border-bottom: 1px solid var(--rule);
+    padding: clamp(46px, 7vw, 82px) 0;
+  }
+  section:last-of-type { border-bottom: 0; }
+
+  .band {
+    display: grid;
+    grid-template-columns: 168px minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 48px);
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .band { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  .band-label {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    position: sticky;
+    top: 24px;
+    line-height: 1.5;
+  }
+  @media (max-width: 760px) {
+    .band-label { position: static; }
+  }
+  .band-label b {
+    display: block;
+    color: var(--signal);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    margin: 0 0 18px;
+  }
+  h3 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.06rem;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .band > div > p { max-width: 62ch; }
+  p { margin: 0 0 16px; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  a { color: var(--cobalt); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, .track:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .lede {
+    font-size: 1.12rem;
+    color: var(--ink);
+  }
+
+  /* ---------- reality-check list ---------- */
+
+  .myths {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: grid;
+    gap: 1px;
+    background: var(--rule-soft);
+    border-block: 1px solid var(--rule-soft);
+  }
+  .myths li {
+    background: var(--paper);
+    padding: 18px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 15em) minmax(0, 1fr);
+    gap: clamp(12px, 3vw, 32px);
+  }
+  @media (max-width: 620px) {
+    .myths li { grid-template-columns: 1fr; gap: 4px; }
+  }
+  .myths .claim {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: line-through;
+    text-decoration-color: var(--signal);
+    text-decoration-thickness: 2px;
+  }
+  .myths .truth { color: var(--ink-soft); font-size: 0.98rem; margin: 0; }
+  .myths .truth b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- two tracks ---------- */
+
+  .tracks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 24px;
+  }
+  .track {
+    background: var(--surface);
+    padding: 24px 22px 26px;
+  }
+  .track .tag {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 12px;
+  }
+  .track h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .track.a h3 { color: var(--ink); }
+  .track.b h3 { color: var(--signal); }
+  .track p { font-size: 0.97rem; color: var(--ink-soft); }
+  .track ul {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .track ul li::before {
+    content: "▸";
+    color: var(--signal);
+    margin-right: 8px;
+  }
+  .track .verdict {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  /* ---------- tables ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    margin-top: 24px;
+    border-top: 1px solid var(--ink);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    min-width: 620px;
+  }
+  thead th {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: left;
+    font-weight: 400;
+    padding: 12px 14px 12px 0;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px 14px 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  tbody td:first-child {
+    font-family: var(--f-display);
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  tbody td.num {
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.84rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  tbody tr:hover td { background: var(--surface); }
+  .pill {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .pill.free  { color: var(--moss); }
+  .pill.pay   { color: var(--ink-faint); }
+  .pill.core  { color: var(--signal); }
+
+  /* ---------- effect map ---------- */
+
+  .map {
+    display: grid;
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+    margin-top: 24px;
+  }
+  .map-row {
+    background: var(--paper);
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(12px, 3vw, 28px);
+    padding: 18px 20px;
+  }
+  @media (max-width: 700px) {
+    .map-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+  .map-row .want {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 0.98rem;
+  }
+  .map-row .want span {
+    display: block;
+    font-family: var(--f-body);
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+  .map-row .with {
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .map-row .with b { color: var(--signal); font-weight: 600; }
+
+  /* ---------- budget meters ---------- */
+
+  .budget {
+    margin-top: 24px;
+    display: grid;
+    gap: 14px;
+  }
+  .meter-row {
+    display: grid;
+    grid-template-columns: minmax(0, 13em) minmax(0, 1fr) 5.5em;
+    gap: 14px;
+    align-items: center;
+    font-size: 0.92rem;
+  }
+  @media (max-width: 620px) {
+    .meter-row { grid-template-columns: minmax(0, 1fr) 5em; }
+    .meter-row .bar { grid-column: 1 / -1; order: 3; }
+  }
+  .meter-row .what { font-family: var(--f-display); font-weight: 500; }
+  .meter-row .val {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--ink);
+  }
+  .bar {
+    height: 8px;
+    background: var(--sunk);
+    position: relative;
+    overflow: hidden;
+  }
+  .bar i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--signal);
+    transform-origin: left;
+    transform: scaleX(var(--fill, 0.5));
+  }
+  .bar i.ok { background: var(--moss); }
+
+  /* ---------- numbered process ---------- */
+
+  ol.steps {
+    list-style: none;
+    counter-reset: s;
+    margin: 24px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--rule-soft);
+    border-block: 1px solid var(--rule-soft);
+  }
+  ol.steps li {
+    counter-increment: s;
+    background: var(--paper);
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: 3.2em minmax(0, 1fr);
+    gap: clamp(10px, 2vw, 22px);
+  }
+  ol.steps li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--signal);
+    padding-top: 3px;
+  }
+  ol.steps h3 { margin-bottom: 5px; }
+  ol.steps p { font-size: 0.96rem; color: var(--ink-soft); }
+  ol.steps .meta {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 8px;
+  }
+
+  /* ---------- callout ---------- */
+
+  .note {
+    border-left: 3px solid var(--signal);
+    padding: 4px 0 4px 18px;
+    margin-top: 24px;
+    font-size: 0.96rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- closing ---------- */
+
+  .closing {
+    padding: clamp(46px, 7vw, 80px) 0 clamp(60px, 9vw, 110px);
+  }
+  .closing h2 { font-size: clamp(1.8rem, 4.6vw, 3rem); }
+  .asks {
+    list-style: none;
+    padding: 0;
+    margin: 26px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .asks li {
+    background: var(--surface);
+    padding: 20px;
+  }
+  .asks .n {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--signal);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .asks p { font-size: 0.94rem; color: var(--ink-soft); }
+  .asks b { color: var(--ink); font-family: var(--f-display); font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 22px 0 44px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- reveal ---------- */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">
+      <span>Werkzeugkasten &amp; Verkaufsprozess</span>
+      <span class="dim">Stand August 2026</span>
+      <span class="dim">Markt: Zürich / DACH</span>
+    </div>
+    <h1>Womit du 2026 eine Webseite baust, zu der ein KMU <em>nicht nein</em> sagt.</h1>
+    <p class="standfirst">Der Stack, die Kosten, der Ablauf von der Kaltakquise bis zur Rechnung — und die drei Annahmen, die du vorher fallen lassen musst.</p>
+  </header>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Zuerst</b>Realitätscheck</div>
+      <div>
+        <h2>Drei Dinge, die anders sind, als sie klingen</h2>
+        <p class="lede">Nicht um dir die Idee kaputtzumachen — sondern damit du im Verkaufsgespräch nicht auf einem Begriff sitzenbleibst, den der Gegenüber technisch nachfragen kann.</p>
+        <ul class="myths">
+          <li>
+            <span class="claim">4D-Webseiten</span>
+            <p class="truth">Gibt es als Technik nicht. Was in Pitches „4D“ heisst, ist <b>3D plus Zeit</b> — also eine 3D-Szene, die auf Scroll, Maus oder Klick reagiert. Genau das kannst du bauen. Nenn es <b>„scroll-gesteuerte 3D-Szene“</b> oder <b>„interaktives Produkt-Modell“</b>: klingt konkreter und ist überprüfbar wahr.</p>
+          </li>
+          <li>
+            <span class="claim">2K / 3K / 4K-Bilder</span>
+            <p class="truth">Höhere Auflösung macht eine Webseite messbar <b>schlechter</b>, nicht besser. Kein Browser zeigt mehr als die CSS-Breite mal Pixeldichte. Ausgeliefert wird <b>AVIF/WebP, maximal ~2560 px lange Kante</b>, per <code>srcset</code> in vier Grössen. Der Eindruck von „hochauflösend“ kommt aus Bildauswahl, Licht und Schärfe — nicht aus Megapixeln.</p>
+          </li>
+          <li>
+            <span class="claim">Viel Animation = teuer wirkend</span>
+            <p class="truth">Ab einem gewissen Punkt kippt es ins Billige. Awwwards-Seiten haben meist <b>einen</b> grossen Effekt (der Held) und drumherum sehr ruhige, präzise Typografie. Deine Verkaufswaffe ist <b>ein</b> unvergesslicher Moment, plus eine Seite, die in unter 2,5 Sekunden steht.</p>
+          </li>
+        </ul>
+        <div class="note"><b>Deine eigentliche Verkaufsstory:</b> „Ihre jetzige Seite lädt in 6,4 Sekunden, ist auf dem Handy kaputt und erfüllt die Barrierefreiheits-Anforderungen nicht. Meine lädt in 1,8 Sekunden — und hat obendrein einen Effekt, den Ihre Konkurrenz nicht hat.“ Zahl zuerst, Effekt danach. Der Effekt allein verkauft nur an Marken; die Zahl verkauft an KMU.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Stack</b>Zwei Linien</div>
+      <div>
+        <h2>Nicht ein Werkzeug — zwei Geschwindigkeiten</h2>
+        <p>Der Fehler wäre, alles in Framer zu bauen oder alles zu programmieren. Du brauchst beides: eine schnelle Linie, um in wenigen Tagen fünf Vorschauen für fünf Firmen zu produzieren, und eine High-End-Linie für die eine Seite, die den Auftrag holt.</p>
+
+        <div class="tracks">
+          <div class="track a" tabindex="0">
+            <span class="tag">Linie A — Volumen</span>
+            <h3>Framer</h3>
+            <p>Dein Arbeitspferd für Akquise-Vorschauen und für 80 % der bezahlten KMU-Aufträge. CMS, Hosting, Formulare und Domain sind eingebaut, das Projekt lässt sich am Ende per Transfer an den Kunden übergeben, ohne neu zu bauen.</p>
+            <ul>
+              <li>Framer (Pro)</li>
+              <li>+ Spline-Embed für 3D</li>
+              <li>+ Unicorn Studio für Shader</li>
+              <li>+ Rive für 2D-Motion</li>
+            </ul>
+            <div class="verdict">Vorschau in 4–8 Std. · Kunde kann selbst pflegen</div>
+          </div>
+          <div class="track b" tabindex="0">
+            <span class="tag">Linie B — Wirkung</span>
+            <h3>Next.js + Three.js</h3>
+            <p>Für das Stück, mit dem du dich beweist: echte WebGL-Szenen, eigene Shader, exakt getimtes Scroll-Storytelling. Hier entsteht das Referenzstück fürs Portfolio — und der Auftrag ab CHF 15'000.</p>
+            <ul>
+              <li>Next.js + TypeScript</li>
+              <li>+ Three.js / React&nbsp;Three&nbsp;Fiber</li>
+              <li>+ GSAP ScrollTrigger &amp; SplitText</li>
+              <li>+ Lenis (Smooth Scroll)</li>
+            </ul>
+            <div class="verdict">1–3 Wochen · Awwwards-fähig · nur Code-Pflege</div>
+          </div>
+        </div>
+
+        <div class="note"><b>Du hast Linie B schon angefangen.</b> Die drehende Dose und die Hand-Illusion in deinem <code>index.html</code> sind reines CSS-3D ohne Bibliothek — technisch genau die Art Kunststück, die im Pitch beeindruckt. Das ist dein erstes Portfolio-Stück, sobald es aufgeräumt, mobil sauber und schnell ist.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Werkzeuge</b>Was &amp; was es kostet</div>
+      <div>
+        <h2>Der Werkzeugkasten, nach Rolle sortiert</h2>
+        <p>Preise sind Listenpreise Stand August 2026 und pro Monat, sofern nicht anders vermerkt — prüf sie vor dem Abo nochmal auf der Anbieterseite, sie ändern sich häufig.</p>
+
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Werkzeug</th><th>Rolle im Projekt</th><th>Preis</th><th>Priorität</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Framer</td><td>Seiten bauen, hosten, ausliefern. CMS und Formulare inklusive, Projekt-Transfer an den Kunden.</td><td class="num">ab ~$10 · Pro ~$30</td><td><span class="pill core">Sofort</span></td></tr>
+              <tr><td>GSAP</td><td>Die Animations-Engine. Seit Webflow GreenSock gekauft hat, sind <em>alle</em> Plugins gratis — ScrollTrigger, SplitText, MorphSVG, DrawSVG, ScrollSmoother — auch kommerziell.</td><td class="num">CHF 0</td><td><span class="pill core">Sofort</span></td></tr>
+              <tr><td>Spline</td><td>3D im Browser bauen wie in Figma, ohne Code. Exportiert nach React/Three.js oder als Embed für Framer. Dein schnellster Weg zu „echtem“ 3D.</td><td class="num">Free · ab ~$14</td><td><span class="pill core">Sofort</span></td></tr>
+              <tr><td>Figma</td><td>Layout, Typo-System und Kundenpräsentation, bevor gebaut wird. Verhindert teure Umbauten.</td><td class="num">Free · Pro ~$16</td><td><span class="pill core">Sofort</span></td></tr>
+              <tr><td>Unicorn Studio</td><td>Scroll-gesteuerte WebGL-Shader und flüssige Verläufe, visuell zusammengeklickt und als Embed eingebaut. Der „teure Look“ zum kleinsten Aufwand.</td><td class="num">Free-Tier vorhanden</td><td><span class="pill pay">Bald</span></td></tr>
+              <tr><td>Rive</td><td>2D-Animationen mit State Machines (Logo-Morph, Icons, Maskottchen), die auf Hover und Klick reagieren. Viel leichter als Video.</td><td class="num">Free · ab ~$32/Platz</td><td><span class="pill pay">Bei Bedarf</span></td></tr>
+              <tr><td>Three.js / R3F</td><td>Die eigentliche 3D-Engine hinter jeder High-End-Seite. Volle Kontrolle über Material, Licht, Reflexionen, HDRI.</td><td class="num">CHF 0</td><td><span class="pill free">Linie B</span></td></tr>
+              <tr><td>Lenis</td><td>Der weiche, „schwere“ Scroll, den jede Award-Seite hat. Zwei Zeilen Code, riesiger Effekt.</td><td class="num">CHF 0</td><td><span class="pill free">Linie B</span></td></tr>
+              <tr><td>Bunny Stream / Mux</td><td>Video ausliefern statt einbinden: automatisch in mehrere Auflösungen kodiert, EU-CDN. Ein 40-MB-MP4 im Hero killt sonst jede Ladezeit.</td><td class="num">ab ~$0.005/GB</td><td><span class="pill pay">Ab Video</span></td></tr>
+              <tr><td>Vercel</td><td>Hosting für Linie B, inkl. Vorschau-Links pro Version — ideal, um einem Kunden zwei Varianten zu zeigen.</td><td class="num">Free · Pro ~$20</td><td><span class="pill pay">Linie B</span></td></tr>
+              <tr><td>Adobe Firefly</td><td>Bildgenerierung mit kommerzieller Absicherung (auf lizenziertem Material trainiert). Für Kundenarbeit die rechtlich ruhigste Wahl.</td><td class="num">im Adobe-Abo</td><td><span class="pill pay">Für Kunden</span></td></tr>
+              <tr><td>Midjourney</td><td>Die schönsten Bilder für Moodboards, Hintergründe, Atmosphäre. Prüf die Lizenzbedingungen fürs kommerzielle Ausliefern.</td><td class="num">ab ~$10 · Standard ~$30</td><td><span class="pill pay">Optional</span></td></tr>
+              <tr><td>Veo / Kling / Runway</td><td>KI-Video für Hero-Loops und Atmosphäre. Achtung: die Gratis-Stufen sind meist <em>nicht</em> kommerziell nutzbar und wasserzeichenbehaftet.</td><td class="num">~$20–95</td><td><span class="pill pay">Pro Projekt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note"><b>Startbudget heute Abend:</b> Framer Pro plus Figma reichen, um loszulegen — alles andere (GSAP, Spline-Free, Lenis, Three.js) kostet null. Nimm KI-Video-Abos erst, wenn ein zahlender Auftrag es verlangt, und rechne sie dem Kunden weiter.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Rezepte</b>Effekt → Werkzeug</div>
+      <div>
+        <h2>Welchen Effekt du womit baust</h2>
+        <p>Wenn ein Kunde etwas zeigt und sagt „so etwas will ich auch“, brauchst du diese Zuordnung im Kopf.</p>
+
+        <div class="map">
+          <div class="map-row"><div class="want">Text erscheint Wort für Wort beim Scrollen<span>Der Klassiker jeder Agenturseite</span></div><div class="with"><b>GSAP SplitText + ScrollTrigger</b><br>gratis, in Framer per Code-Komponente</div></div>
+          <div class="map-row"><div class="want">Produkt dreht sich, während man scrollt<span>Dose, Flasche, Uhr, Maschine</span></div><div class="with"><b>Spline</b> (schnell) oder <b>Three.js + GLTF</b> (fotorealistisch)<br>Kamera an Scroll-Fortschritt koppeln</div></div>
+          <div class="map-row"><div class="want">Flüssige, farbige Hintergrund-Verläufe<span>Wirkt teuer, ist es nicht</span></div><div class="with"><b>Unicorn Studio</b> als Embed<br>Alternative: eigener GLSL-Shader</div></div>
+          <div class="map-row"><div class="want">Etwas ragt aus dem Bildschirm heraus<span>Deine Hand-Illusion</span></div><div class="with"><b>CSS perspective + Parallax</b> auf Mausbewegung<br>plus Gyroskop am Handy</div></div>
+          <div class="map-row"><div class="want">Seite fühlt sich „schwer“ und teuer an<span>Der unterschätzteste Effekt überhaupt</span></div><div class="with"><b>Lenis</b> Smooth Scroll<br>+ langsame Ease-Kurven statt schneller</div></div>
+          <div class="map-row"><div class="want">Bilder ziehen beim Scrollen unterschiedlich schnell<span>Tiefe ohne 3D</span></div><div class="with"><b>ScrollTrigger scrub</b> auf <code>translateY</code><br>niemals auf <code>top</code> — das ruckelt</div></div>
+          <div class="map-row"><div class="want">Logo/Icons animieren auf Hover<span>Mikro-Interaktionen</span></div><div class="with"><b>Rive</b> State Machines<br>oder SVG + GSAP MorphSVG</div></div>
+          <div class="map-row"><div class="want">Video-Hero in Kinoqualität<span>Restaurant, Hotel, Handwerk</span></div><div class="with"><b>Bunny Stream</b> / Mux, HLS, stumm, mit Poster<br>und ein Standbild als Fallback am Handy</div></div>
+          <div class="map-row"><div class="want">Cursor verzerrt/zieht die Umgebung<span>Der Awwwards-Reflex</span></div><div class="with"><b>Three.js Shader</b> mit Maus-Uniform<br>nur für Linie B, kostet echte Zeit</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Grenzen</b>Performance-Budget</div>
+      <div>
+        <h2>Die Zahlen, die du nicht überschreiten darfst</h2>
+        <p>Eine beeindruckende Seite, die sechs Sekunden lädt, verlierst du im zweiten Termin — spätestens wenn der Kunde sie seinem Neffen zeigt, der PageSpeed kennt. Miss jede Demo, bevor du sie verschickst.</p>
+
+        <div class="budget">
+          <div class="meter-row"><span class="what">Largest Contentful Paint</span><span class="bar"><i class="ok" style="--fill:.32"></i></span><span class="val">&lt; 2.5 s</span></div>
+          <div class="meter-row"><span class="what">Interaktions-Latenz (INP)</span><span class="bar"><i class="ok" style="--fill:.22"></i></span><span class="val">&lt; 200 ms</span></div>
+          <div class="meter-row"><span class="what">Layout-Verschiebung (CLS)</span><span class="bar"><i class="ok" style="--fill:.14"></i></span><span class="val">&lt; 0.1</span></div>
+          <div class="meter-row"><span class="what">Gewicht erster Bildschirm</span><span class="bar"><i style="--fill:.55"></i></span><span class="val">&lt; 1.5 MB</span></div>
+          <div class="meter-row"><span class="what">Hero-Bild, lange Kante</span><span class="bar"><i style="--fill:.48"></i></span><span class="val">≤ 2560 px</span></div>
+          <div class="meter-row"><span class="what">JavaScript gesamt</span><span class="bar"><i style="--fill:.4"></i></span><span class="val">&lt; 350 KB</span></div>
+          <div class="meter-row"><span class="what">Bildrate der 3D-Szene</span><span class="bar"><i class="ok" style="--fill:.85"></i></span><span class="val">60 fps</span></div>
+        </div>
+
+        <div class="note">Vier Regeln, die dieses Budget halten: 3D-Szene erst starten, wenn sie in den Sichtbereich scrollt (<code>IntersectionObserver</code>). Pixeldichte auf 2 begrenzen. Am Handy die Szene durch ein Standbild ersetzen, wenn das Gerät schwach ist. Und <code>prefers-reduced-motion</code> respektieren — das ist gleichzeitig Barrierefreiheit und ein Verkaufsargument.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Ablauf</b>Von der Liste zur Rechnung</div>
+      <div>
+        <h2>Der Verkaufsprozess in fünf Schritten</h2>
+        <p>Fünf komplette Vorschau-Webseiten auf Verdacht zu bauen, ist zu viel Arbeit für zu wenig Rücklauf. Dreh es um: viel Analyse, wenig Bau — und der Bau erst, wenn jemand geantwortet hat.</p>
+
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>Zielliste bauen</h3>
+              <p>30–50 Zürcher Firmen mit sichtbar veralteter Seite: Treuhand, Zahnarzt, Architektur, Handwerk, Praxen, Restaurants, Garagen. Kriterien: kein HTTPS, am Handy kaputt, Design vor 2018, PageSpeed unter 50. Nur Firmenadressen, keine privaten Mailkonten.</p>
+              <p class="meta">Aufwand: 1 Tag · Werkzeug: Zefix / Google Maps / PageSpeed Insights</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Ein-Seiten-Audit statt Verkaufstext</h3>
+              <p>Pro Firma ein PDF auf einer Seite: Screenshot Handy vs. Desktop, drei gemessene Zahlen, drei konkrete Probleme, ein Satz Konsequenz („Sie verlieren geschätzt jeden zweiten Handy-Besucher“). Kein Design-Geschwafel. Das ist dein Türöffner — und es ist ehrlich, weil gemessen.</p>
+              <p class="meta">Aufwand: 20 Min. pro Firma · das lässt sich weitgehend automatisieren</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Erst nach Antwort: der Hero</h3>
+              <p>Wer antwortet, bekommt binnen 48 Stunden <em>nicht</em> eine ganze Webseite, sondern die <strong>erste Bildschirmseite</strong> — mit seinem echten Text, seinen Farben, einem Effekt. Als Link, nicht als Bild. Ein Hero, der sitzt, verkauft besser als fünf halbfertige Seiten.</p>
+              <p class="meta">Aufwand: 4–8 Std. in Framer · Link auf Passwort setzen, nicht öffentlich</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Termin, gemeinsam am Bildschirm</h3>
+              <p>Alte Seite links, deine rechts, beide auf dem Handy. Du sagst nichts Schlechtes über den Vorgänger — du zeigst nur die Ladezeit. Am Ende zwei Preise nennen, nie einen: die Leute wählen zwischen A und B, statt zwischen Ja und Nein.</p>
+              <p class="meta">Richtwerte Zürich: Landing CHF 3'500–6'500 · KMU-Seite CHF 8'000–15'000 · High-End WebGL ab CHF 18'000</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Nach dem Bauen: Betrieb verkaufen</h3>
+              <p>Der eigentliche Wert liegt im Danach. Framer-Hosting, Inhaltspflege, Erreichbarkeits-Überwachung, vier Änderungen pro Jahr: CHF 90–250 pro Monat, pro Kunde. Zehn Kunden im Betrieb sind ein Grundeinkommen, das dich unabhängig von der nächsten Akquise macht.</p>
+              <p class="meta">Wiederkehrend · der Unterschied zwischen Freelancer und Studio</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Rechtliches</b>Schweiz</div>
+      <div>
+        <h2>Was du bei der Kaltakquise beachten musst</h2>
+        <p>Kein Grund zur Panik, aber zwei Dinge solltest du wissen, bevor du hunderte Mails verschickst. Das ist meine Zusammenfassung der Recherche, keine Rechtsberatung — bei Unsicherheit kurz mit einer Anwältin oder einem Anwalt sprechen.</p>
+
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Thema</th><th>Regel</th><th>Was das für dich heisst</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>UWG Art. 3 lit. o</td><td>Massenwerbung per Mail ohne Einwilligung und ohne Bezug ist unlauter.</td><td>Individuell formulierte Mails an <strong>geschäftliche</strong> Adressen mit klarem sachlichem Bezug (dem Audit ihrer eigenen Seite), Absender korrekt, Abmeldemöglichkeit im Text. Keine gekauften Listen, kein Massenversand.</td></tr>
+              <tr><td>Telefon</td><td>Der Stern-Eintrag im Telefonbuch ist eine Werbesperre.</td><td>Vor dem Anruf prüfen. Sterneinträge nie anrufen.</td></tr>
+              <tr><td>Kundenlogo in der Demo</td><td>Für den privaten Pitch an genau diese Firma unproblematisch.</td><td>Demo-Link mit Passwort schützen, nicht ins Portfolio stellen, nicht indexieren lassen, klar als „Konzeptentwurf“ kennzeichnen. Keine fremden Logos öffentlich zeigen.</td></tr>
+              <tr><td>nDSG</td><td>Datenschutzerklärung und Impressum sind Pflicht auf jeder Seite, die du auslieferst.</td><td>Als Standardbaustein in jedes Angebot aufnehmen — und als Fehler benennen, wenn er beim Interessenten fehlt.</td></tr>
+              <tr><td>Barrierefreiheit</td><td>Der European Accessibility Act gilt seit Juni 2025 auch für Schweizer Firmen, die Endkunden in der EU bedienen; das BehiG wird revidiert.</td><td>Dein stärkstes Verkaufsargument nach der Ladezeit. Bau von Anfang an WCAG 2.1 AA: Kontraste, Tastaturbedienung, Alt-Texte, <code>prefers-reduced-motion</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <div class="band">
+      <div class="band-label"><b>Nächster Schritt</b>Deine Wahl</div>
+      <div>
+        <h2>Womit fangen wir an?</h2>
+        <p class="lede">Ich brauche von dir nur eine Entscheidung. Die Arbeit danach übernehme ich.</p>
+        <ul class="asks">
+          <li><span class="n">Option A</span><p><b>Portfolio-Stück fertig machen.</b> Deine Dosen- und Hand-Demo aufräumen: eigene Dateien, Vite-Setup, mobil sauber, schnell, deploybar. Damit hast du etwas zum Herzeigen, bevor du die erste Mail schreibst.</p></li>
+          <li><span class="n">Option B</span><p><b>Audit-Werkzeug bauen.</b> Ein Skript, das für eine Liste Zürcher Firmen automatisch Ladezeit, Handy-Tauglichkeit und Barrierefreiheit misst und pro Firma ein Ein-Seiten-PDF ausgibt. Das ist dein Türöffner in Serie.</p></li>
+          <li><span class="n">Option C</span><p><b>Hero-Vorlagen bauen.</b> Drei bis fünf austauschbare Hero-Sektionen (3D-Produkt, Video, Scroll-Text, Shader), in die du in einer Stunde den Text und die Farben eines Interessenten einsetzt.</p></li>
+        </ul>
+        <div class="note">Meine Empfehlung: <b>B, dann A, dann C.</b> Das Audit-Werkzeug bringt dir Gespräche, und Gespräche sagen dir, welche Heroes sich überhaupt zu bauen lohnen. Erst bauen, was jemand sehen will.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Pitch-Stack Zürich · Recherchestand August 2026</span>
+    <span>Preise und Rechtslage vor Abschluss prüfen</span>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
