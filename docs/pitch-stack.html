@@ -522,7 +522,7 @@
   <header class="masthead">
     <div class="kicker">
       <span>Werkzeugkasten &amp; Verkaufsprozess</span>
-      <span class="dim">Stand August 2026</span>
+      <span class="dim">Stand August 2026 · 2. Fassung</span>
       <span class="dim">Markt: Zürich / DACH</span>
     </div>
     <h1>Womit du 2026 eine Webseite baust, zu der ein KMU <em>nicht nein</em> sagt.</h1>
@@ -689,16 +689,16 @@
           </li>
           <li>
             <div>
-              <h3>Ein-Seiten-Audit statt Verkaufstext</h3>
-              <p>Pro Firma ein PDF auf einer Seite: Screenshot Handy vs. Desktop, drei gemessene Zahlen, drei konkrete Probleme, ein Satz Konsequenz („Sie verlieren geschätzt jeden zweiten Handy-Besucher“). Kein Design-Geschwafel. Das ist dein Türöffner — und es ist ehrlich, weil gemessen.</p>
-              <p class="meta">Aufwand: 20 Min. pro Firma · das lässt sich weitgehend automatisieren</p>
+              <h3>Messen, dann fragen — ohne Link, ohne Anhang</h3>
+              <p>Pro Firma eine Messung: Screenshot Handy und Desktop, drei gemessene Zahlen, die dringendsten Befunde. Daraus wird eine Analyse auf einer Seite. Die erste Mail enthält aber <strong>nur die drei Zahlen im Fliesstext</strong> und die Frage, ob du die Auswertung schicken sollst. Kein Link, kein Anhang, kein Design-Geschwafel.</p>
+              <p class="meta">Aufwand: 20 Min. pro Firma · <code>tools/audit.mjs</code> und <code>tools/bericht.mjs</code></p>
             </div>
           </li>
           <li>
             <div>
-              <h3>Erst nach Antwort: der Hero</h3>
-              <p>Wer antwortet, bekommt binnen 48 Stunden <em>nicht</em> eine ganze Webseite, sondern die <strong>erste Bildschirmseite</strong> — mit seinem echten Text, seinen Farben, einem Effekt. Als Link, nicht als Bild. Ein Hero, der sitzt, verkauft besser als fünf halbfertige Seiten.</p>
-              <p class="meta">Aufwand: 4–8 Std. in Framer · Link auf Passwort setzen, nicht öffentlich</p>
+              <h3>Antwort im Verlauf: erst die Analyse, dann der Hero</h3>
+              <p>Sobald jemand antwortet, ist der Mailverlauf für jeden Spamfilter eine bestehende Beziehung — ab hier kommen Links zuverlässig an. Also: Antwort mit dem Link zur Analyse. Wer danach noch dabei ist, bekommt binnen 48 Stunden <em>nicht</em> eine ganze Webseite, sondern die <strong>erste Bildschirmseite</strong> mit seinem echten Text und seinen Farben.</p>
+              <p class="meta">Aufwand: 4–8 Std. für den Hero · Link auf Passwort setzen, nicht öffentlich</p>
             </div>
           </li>
           <li>
@@ -741,6 +741,36 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="band">
+      <div class="band-label"><b>Zustellbarkeit</b>Ankommen statt Spam</div>
+      <div>
+        <h2>Nicht der Link entscheidet, sondern der Absender</h2>
+        <p>Ein Link macht eine Mail nicht verdächtig. Google, Yahoo und Microsoft filtern nach Absender-Authentifizierung und Ruf: eine sauber signierte Mail von einer eigenen Domain kommt an, zehn identische von einer frischen Gratis-Adresse nicht — mit oder ohne Link.</p>
+
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Punkt</th><th>Was zu tun ist</th><th>Warum</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Absenderdomain</td><td>Eigene Domain statt einer Gratis-Adresse. Für Schweizer KMU wirkt ein Schweizer Anbieter zusätzlich glaubwürdig.</td><td>Eine Geschäftsmail von einer Freemail-Adresse ist das erste Misstrauenssignal — beim Filter wie beim Empfänger.</td></tr>
+              <tr><td>SPF, DKIM, DMARC</td><td>Alle drei setzen; DMARC startet mit <code>p=none</code>. Der Absender im Von-Feld muss zu SPF oder DKIM passen.</td><td>Ohne die drei ist Zustellung Glückssache. Microsoft verlangt volle Ausrichtung ab 1'000 Mails pro Tag, Google ab 5'000 — der Ruf zählt aber ab der ersten Mail.</td></tr>
+              <tr><td>Einlaufphase</td><td>Zwei Wochen lang 10–20 Mails pro Tag, von Hand, jede anders formuliert.</td><td>Eine neue Domain, die sofort hundert identische Mails verschickt, ist das klassische Spam-Muster.</td></tr>
+              <tr><td>Keine Tricks</td><td>Kein Link-Kürzer, kein Zählpixel, kein Massenversand-Werkzeug am Anfang. Reiner Text schlägt HTML-Vorlage.</td><td>Genau diese Merkmale sind es, auf die Filter trainiert sind.</td></tr>
+              <tr><td>Adressqualität</td><td>Adressen vor dem Versand prüfen. Beschwerden unter 0,3 % halten (Microsoft: 0,2 %), Rückläufer unter 2 %.</td><td>Über diesen Schwellen sortiert der Anbieter dich dauerhaft aus — das lässt sich kaum zurückholen.</td></tr>
+              <tr><td>Abmeldung</td><td>Ein Satz am Ende genügt: eine kurze Antwort reicht, und du meldest dich nicht wieder.</td><td>Erfüllt gleichzeitig die Opt-out-Anforderung des UWG.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note"><b>Der Kniff, der das Problem umgeht:</b> Die erste Mail enthält nur die drei Messwerte im Fliesstext und die Frage „Soll ich Ihnen die Auswertung schicken?“ — kein Link, kein Anhang. Der Link geht erst in der <b>Antwort im selben Verlauf</b> raus. Ein Verlauf, in dem der Empfänger selbst geschrieben hat, wird praktisch nie gefiltert. Du verschenkst nichts dabei: die Zahlen sind der Aufhänger, die Analyse ist die Belohnung fürs Antworten — und du siehst sofort, wer überhaupt Interesse hat.</div>
+
+        <div class="note">Zwei Wege, die das Spam-Thema ganz umgehen und in Zürich bei Gewerbe- und Handwerksbetrieben gut funktionieren: die <b>ausgedruckte Analyse per Post</b>, eine Seite, mit kurzer Adresse darauf — für 1.20 Franken Porto liegt sie garantiert auf dem Tisch. Und das <b>Telefon</b>, nach Prüfung des Sterneintrags.</div>
       </div>
     </div>
   </section>

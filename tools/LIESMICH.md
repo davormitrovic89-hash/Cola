@@ -46,3 +46,16 @@ node tools/beispiel/erzeuge-bilder.mjs   # Bilder erzeugen
 npm run beispiel                          # auf Port 8081 ausliefern
 node tools/audit.mjs http://127.0.0.1:8081/index.html
 ```
+
+## `galerie.mjs` — Übersicht der Hero-Vorlagen
+
+```bash
+node tools/galerie.mjs
+```
+
+Baut aus `heroes/*.html` die Datei `heroes/galerie.html`: eine einzelne Seite,
+in der alle Vorlagen live laufen. Jede steckt in einem eigenen iframe
+(`srcdoc`), damit sich CSS und JavaScript der Vorlagen nicht gegenseitig
+stören und die Galerie ohne Server auskommt.
+
+Nach jeder Änderung an einer Vorlage neu bauen.
