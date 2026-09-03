@@ -1,0 +1,379 @@
+<title>Baukasten ohne Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --paper:#E9EAE4; --surface:#F4F5F0; --sunk:#DFE0D9;
+    --ink:#16181A; --ink-soft:#565C60; --ink-faint:#878D8F;
+    --rule:#C7C9C1; --rule-soft:#D8DAD2;
+    --signal:#C41E25; --gut:#3F6B4A;
+    --f-display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+    --gut-raum: clamp(20px,4vw,56px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#101214; --surface:#181B1D; --sunk:#0B0D0E;
+      --ink:#E7E8E3; --ink-soft:#A0A6A8; --ink-faint:#6E7477;
+      --rule:#2E3336; --rule-soft:#23282A;
+      --signal:#FF4D52; --gut:#7FB58C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#101214; --surface:#181B1D; --sunk:#0B0D0E;
+    --ink:#E7E8E3; --ink-soft:#A0A6A8; --ink-faint:#6E7477;
+    --rule:#2E3336; --rule-soft:#23282A;
+    --signal:#FF4D52; --gut:#7FB58C;
+  }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 var(--gut-raum); }
+
+  .masthead { border-bottom:2px solid var(--ink); padding:clamp(44px,8vw,92px) 0 26px; }
+  .zeile { font-family:var(--f-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--signal); display:flex; gap:14px; flex-wrap:wrap; margin-bottom:clamp(22px,5vw,42px); }
+  .zeile .dim { color:var(--ink-faint); }
+  h1 { font-family:var(--f-display); font-weight:800; font-size:clamp(2.5rem,8vw,5.8rem); line-height:.95; letter-spacing:-.035em; margin:0 0 24px; text-wrap:balance; }
+  h1 em { font-style:normal; color:var(--signal); }
+  .vorspann { font-size:clamp(1.05rem,2.1vw,1.28rem); line-height:1.55; color:var(--ink-soft); max-width:52ch; margin:0; }
+
+  section { border-bottom:1px solid var(--rule); padding:clamp(44px,7vw,78px) 0; }
+  section:last-of-type { border-bottom:0; }
+  .band { display:grid; grid-template-columns:168px minmax(0,1fr); gap:clamp(20px,4vw,48px); align-items:start; }
+  @media (max-width:760px){ .band{ grid-template-columns:1fr; gap:18px; } }
+  .band-label { font-family:var(--f-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); position:sticky; top:24px; line-height:1.5; }
+  @media (max-width:760px){ .band-label{ position:static; } }
+  .band-label b { display:block; color:var(--signal); font-weight:600; }
+
+  h2 { font-family:var(--f-display); font-weight:700; font-size:clamp(1.6rem,3.6vw,2.5rem); line-height:1.06; letter-spacing:-.025em; margin:0 0 18px; text-wrap:balance; }
+  h3 { font-family:var(--f-display); font-weight:600; font-size:1.05rem; margin:0 0 8px; }
+  .band > div > p { max-width:62ch; }
+  p { margin:0 0 16px; } p:last-child { margin-bottom:0; }
+  strong { font-weight:600; }
+  code { font-family:var(--f-mono); font-size:.86em; }
+  .lede { font-size:1.12rem; color:var(--ink); }
+
+  .scroller { overflow-x:auto; margin-top:24px; border-top:1px solid var(--ink); }
+  table { width:100%; border-collapse:collapse; font-size:.92rem; min-width:660px; }
+  thead th { font-family:var(--f-mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint); text-align:left; font-weight:400; padding:12px 14px 12px 0; border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody td { padding:14px 14px 14px 0; border-bottom:1px solid var(--rule-soft); vertical-align:top; color:var(--ink-soft); }
+  tbody td:first-child { font-family:var(--f-display); font-weight:600; color:var(--ink); white-space:nowrap; }
+  tbody td.num { font-family:var(--f-mono); font-variant-numeric:tabular-nums; font-size:.83rem; color:var(--ink); white-space:nowrap; }
+  tbody tr:hover td { background:var(--surface); }
+  .pill { display:inline-block; font-family:var(--f-mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; padding:3px 7px; border:1px solid currentColor; white-space:nowrap; }
+  .pill.muss { color:var(--signal); }
+  .pill.kann { color:var(--ink-faint); }
+  .pill.frei { color:var(--gut); }
+
+  ol.stufen { list-style:none; counter-reset:s; margin:24px 0 0; padding:0; display:grid; gap:1px; background:var(--rule-soft); border-block:1px solid var(--rule-soft); }
+  ol.stufen > li { counter-increment:s; background:var(--paper); padding:22px 0; display:grid; grid-template-columns:3.2em minmax(0,1fr); gap:clamp(10px,2vw,22px); }
+  ol.stufen > li::before { content:counter(s,decimal-leading-zero); font-family:var(--f-mono); font-size:12px; color:var(--signal); padding-top:3px; }
+  ol.stufen p { font-size:.96rem; color:var(--ink-soft); }
+  .werkzeuge { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .werkzeuge span { font-family:var(--f-mono); font-size:11px; letter-spacing:.03em; border:1px solid var(--rule); padding:5px 10px; color:var(--ink); }
+  .werkzeuge span.neben { color:var(--ink-faint); border-style:dashed; }
+
+  .note { border-left:3px solid var(--signal); padding:4px 0 4px 18px; margin-top:24px; font-size:.96rem; color:var(--ink-soft); }
+  .note b { color:var(--ink); font-weight:600; }
+
+  .paare { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:24px; }
+  .paare > div { background:var(--surface); padding:22px 20px; }
+  .paare .tag { font-family:var(--f-mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:12px; }
+  .paare .summe { font-family:var(--f-display); font-weight:800; font-size:2.2rem; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; margin-bottom:10px; }
+  .paare .summe.klein { color:var(--gut); }
+  .paare .summe.gross { color:var(--signal); }
+  .paare ul { margin:12px 0 0; padding:0; list-style:none; font-family:var(--f-mono); font-size:11.5px; line-height:1.85; color:var(--ink-soft); }
+  .paare p { font-size:.92rem; color:var(--ink-soft); }
+
+  .kann-nicht { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1px; background:var(--rule-soft); border-block:1px solid var(--rule-soft); margin-top:22px; }
+  .kann-nicht > div { background:var(--paper); padding:18px 20px 18px 0; }
+  .kann-nicht h3 { font-size:.95rem; }
+  .kann-nicht h3.ja { color:var(--gut); }
+  .kann-nicht h3.nein { color:var(--signal); }
+  .kann-nicht ul { margin:0; padding-left:18px; font-size:.94rem; color:var(--ink-soft); line-height:1.7; }
+
+  footer { border-top:1px solid var(--rule); padding:22px 0 46px; font-family:var(--f-mono); font-size:11px; letter-spacing:.05em; color:var(--ink-faint); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+
+  a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:2px; }
+  a:focus-visible { outline:2px solid var(--signal); outline-offset:3px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="zeile">
+      <span>Linie A — ohne Code</span>
+      <span class="dim">Preise: Richtwerte, Stand August 2026</span>
+      <span class="dim">Vor Abschluss prüfen</span>
+    </div>
+    <h1>Alles, was du <em>ohne eine Zeile Code</em> bauen kannst.</h1>
+    <p class="vorspann">Der vollständige Werkzeugkasten für Kundenseiten, die du im Browser zusammensetzt — was jedes Stück tut, was es kostet, und wo diese Linie an ihre Grenze stösst.</p>
+  </header>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Ehrlich</b>Grenzen</div>
+      <div>
+        <h2>Was diese Linie kann — und wo sie aufhört</h2>
+        <p class="lede">Damit du im Kundengespräch nichts zusagst, was du danach nicht halten kannst.</p>
+        <div class="kann-nicht">
+          <div>
+            <h3 class="ja">Trägt problemlos</h3>
+            <ul>
+              <li>Landing Pages und Firmenseiten bis etwa 30 Unterseiten</li>
+              <li>Blog, News, Referenzen über das eingebaute CMS</li>
+              <li>Scroll-Effekte, Übergänge, Mikro-Interaktionen</li>
+              <li>Eingebettetes 3D und Shader-Hintergründe</li>
+              <li>Formulare, Termin-Buchung, Newsletter-Anmeldung</li>
+              <li>Mehrsprachigkeit (Deutsch / Englisch / Französisch)</li>
+              <li>Übergabe an den Kunden, der danach selbst Texte pflegt</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="nein">Stösst an die Grenze</h3>
+            <ul>
+              <li>Eigene Shader und exakt getimtes Scroll-Storytelling</li>
+              <li>Fotorealistisches 3D mit echten Spiegelungen</li>
+              <li>Shop mit Lager, Varianten, Rechnungslauf</li>
+              <li>Anbindung an eine bestehende Kunden- oder Warendatenbank</li>
+              <li>Tausende CMS-Einträge mit komplexen Filtern</li>
+              <li>Alles, was pro Besucher etwas berechnen muss</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note"><b>Faustregel:</b> Solange die Seite <em>zeigt</em>, trägt diese Linie. Sobald die Seite <em>rechnet</em>, brauchst du die Code-Linie.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Ablauf</b>Sieben Stufen</div>
+      <div>
+        <h2>Der Weg von der leeren Seite zum bezahlten Auftrag</h2>
+        <p>In dieser Reihenfolge — nicht, weil es hübsch aussieht, sondern weil jede Stufe Entscheidungen aus der vorherigen braucht. Wer in Stufe 3 anfängt, baut zweimal.</p>
+
+        <ol class="stufen">
+          <li>
+            <div>
+              <h3>Planen und gestalten</h3>
+              <p>Layout, Schriftsystem und Farben festlegen, bevor gebaut wird. Der Kunde sieht hier zum ersten Mal etwas — Änderungen kosten in dieser Stufe Minuten, später Stunden.</p>
+              <div class="werkzeuge">
+                <span>Figma</span><span>Google Fonts</span>
+                <span class="neben">Unsplash / Pexels</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Bauen und ausliefern</h3>
+              <p>Dein Arbeitspferd. Framer vereint Bauen, CMS, Formulare, Domain und Hosting in einem Abo — und lässt das fertige Projekt am Ende an den Kunden übertragen, ohne dass etwas neu gebaut werden muss.</p>
+              <div class="werkzeuge">
+                <span>Framer</span>
+                <span class="neben">Webflow (Alternative)</span>
+                <span class="neben">Wix Studio (Alternative)</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>In Bewegung bringen</h3>
+              <p>Framers eigene Effekte decken das meiste ab. Für Logo-Animationen, Icons und Figuren, die auf Hover reagieren, kommt Rive dazu — deutlich leichter als ein Video und in jeder Grösse scharf.</p>
+              <div class="werkzeuge">
+                <span>Framer-Effekte</span><span>Rive</span>
+                <span class="neben">LottieFiles</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>3D und Shader</h3>
+              <p>Spline ist wie Figma, nur räumlich: 3D im Browser bauen, als Embed einsetzen. Unicorn Studio liefert die fliessenden Farbverläufe, die auf Scroll reagieren — der „teure“ Look mit dem geringsten Aufwand.</p>
+              <div class="werkzeuge">
+                <span>Spline</span><span>Unicorn Studio</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Bilder und Video</h3>
+              <p>Die Stufe, an der die meisten Seiten scheitern. Jedes Bild vor dem Hochladen verkleinern, jedes Video über einen Dienst ausliefern statt direkt einzubinden — sonst ist die schöne Seite die langsame Seite.</p>
+              <div class="werkzeuge">
+                <span>Squoosh</span><span>Bunny Stream</span>
+                <span class="neben">Adobe Firefly</span><span class="neben">Midjourney</span>
+                <span class="neben">Veo / Kling / Runway</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Rechtliches und Betrieb</h3>
+              <p>Impressum, Datenschutzerklärung, eine Statistik ohne Cookie-Banner und eine Absenderadresse auf eigener Domain. Unspektakulär, aber genau das, was beim Interessenten fehlt und dir das Gespräch öffnet.</p>
+              <div class="werkzeuge">
+                <span>Infomaniak</span><span>Plausible / Fathom</span>
+                <span class="neben">Tally</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Messen und nachweisen</h3>
+              <p>Vorher und nachher messen, das Ergebnis dem Kunden zeigen. Diese Zahl ist es, die deine Rechnung rechtfertigt — nicht der Effekt.</p>
+              <div class="werkzeuge">
+                <span>PageSpeed Insights</span><span>Search Console</span>
+                <span class="neben">WAVE (Barrierefreiheit)</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Liste</b>Jedes Werkzeug</div>
+      <div>
+        <h2>Der vollständige Werkzeugkasten</h2>
+        <p>Preise pro Monat, sofern nicht anders vermerkt. Anbieter ändern ihre Tarife häufig — prüf sie vor dem Abschluss auf der Anbieterseite.</p>
+
+        <div class="scroller">
+          <table>
+            <thead>
+              <tr><th>Werkzeug</th><th>Wofür</th><th>Preis</th><th>Nötig?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Framer</td><td>Seiten bauen, CMS, Formulare, Domain, Hosting. Projekt-Transfer an den Kunden inklusive.</td><td class="num">Free · ab ~$10 · Pro ~$30</td><td><span class="pill muss">Kern</span></td></tr>
+              <tr><td>Figma</td><td>Entwurf und Kundenpräsentation, bevor gebaut wird. Verhindert teure Umbauten.</td><td class="num">Free · Pro ~$16</td><td><span class="pill muss">Kern</span></td></tr>
+              <tr><td>Spline</td><td>3D im Browser gestalten, als Embed in Framer einsetzen. Kein Code.</td><td class="num">Free · ab ~$14</td><td><span class="pill muss">Kern</span></td></tr>
+              <tr><td>Unicorn Studio</td><td>Scroll-gesteuerte WebGL-Verläufe und Shader, visuell zusammengeklickt.</td><td class="num">Free-Tier vorhanden</td><td><span class="pill kann">Empfohlen</span></td></tr>
+              <tr><td>Rive</td><td>2D-Animationen mit Zuständen: Logo-Morph, Icons, Figuren, die auf Hover reagieren.</td><td class="num">Free · ab ~$32/Platz</td><td><span class="pill kann">Bei Bedarf</span></td></tr>
+              <tr><td>LottieFiles</td><td>After-Effects-Animationen fürs Web. Nur sinnvoll, wenn der Kunde bereits welche hat.</td><td class="num">Free · ab ~$20</td><td><span class="pill kann">Selten</span></td></tr>
+              <tr><td>Google Fonts</td><td>Schriften. In Framer selbst gehostet, also ohne Datenschutzproblem.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+              <tr><td>Squoosh</td><td>Bilder vor dem Hochladen auf WebP/AVIF bringen und verkleinern. Im Browser, ohne Konto.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+              <tr><td>Unsplash · Pexels</td><td>Lizenzfreie Fotos, wenn der Kunde keine eigenen hat. Zweite Wahl — eigene Bilder verkaufen besser.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+              <tr><td>Adobe Firefly</td><td>Bildgenerierung mit kommerzieller Absicherung, auf lizenziertem Material trainiert. Für Kundenarbeit die ruhigste Wahl.</td><td class="num">im Adobe-Abo</td><td><span class="pill kann">Für Kunden</span></td></tr>
+              <tr><td>Midjourney</td><td>Die schönsten Bilder für Stimmung, Hintergründe, Moodboards. Lizenzbedingungen fürs Ausliefern prüfen.</td><td class="num">ab ~$10 · Standard ~$30</td><td><span class="pill kann">Optional</span></td></tr>
+              <tr><td>Veo · Kling · Runway</td><td>KI-Video für Hero-Schleifen. Achtung: Gratis-Stufen sind meist <em>nicht</em> kommerziell nutzbar und tragen ein Wasserzeichen.</td><td class="num">~$20–95</td><td><span class="pill kann">Pro Projekt</span></td></tr>
+              <tr><td>Bunny Stream</td><td>Video ausliefern statt einbinden: automatisch in mehrere Auflösungen kodiert, europäisches Netz.</td><td class="num">ab ~$0.005/GB</td><td><span class="pill kann">Ab Video</span></td></tr>
+              <tr><td>Infomaniak</td><td>Schweizer Domain und Geschäftsmail. Bei Schweizer KMU auch ein Argument, nicht nur Technik.</td><td class="num">ab ~CHF 6</td><td><span class="pill muss">Kern</span></td></tr>
+              <tr><td>Plausible · Fathom</td><td>Besucherstatistik ohne Cookies und ohne Banner. Datenschutzfreundlich und dadurch verkaufbar.</td><td class="num">ab ~$9</td><td><span class="pill kann">Empfohlen</span></td></tr>
+              <tr><td>Tally</td><td>Formulare, die Framers eingebaute übersteigen — mehrstufig, mit Bedingungen.</td><td class="num">Free · ab ~$29</td><td><span class="pill kann">Selten</span></td></tr>
+              <tr><td>PageSpeed Insights</td><td>Die Zahl, mit der du verkaufst. Vorher und nachher messen.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+              <tr><td>Search Console</td><td>Zeigt dem Kunden schwarz auf weiss, wie sich die Sichtbarkeit nach dem Umbau entwickelt.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+              <tr><td>WAVE</td><td>Prüft Barrierefreiheit im Browser. Findet Kontrast- und Alt-Text-Probleme in Sekunden.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Kosten</b>Pro Monat</div>
+      <div>
+        <h2>Was du wirklich zahlen musst</h2>
+        <p>Zwei Ausbaustufen. Fang links an — die rechte Spalte lohnt sich erst, wenn zahlende Kunden sie verlangen, und dann rechnest du sie ohnehin weiter.</p>
+
+        <div class="paare">
+          <div>
+            <span class="tag">Einstieg — heute Abend</span>
+            <div class="summe klein">~50</div>
+            <p>Franken im Monat. Reicht vollständig für Akquise-Entwürfe und die ersten bezahlten Aufträge.</p>
+            <ul>
+              <li>▸ Framer Pro</li>
+              <li>▸ Figma Pro</li>
+              <li>▸ Domain + Mail</li>
+              <li>▸ Spline, Unicorn, Squoosh: gratis</li>
+            </ul>
+          </div>
+          <div>
+            <span class="tag">Vollausbau — mit Kunden</span>
+            <div class="summe gross">~180</div>
+            <p>Franken im Monat, alles dabei. Ab drei laufenden Kunden trägt sich das aus dem Betreuungsvertrag.</p>
+            <ul>
+              <li>▸ Einstieg, plus</li>
+              <li>▸ Rive</li>
+              <li>▸ Adobe-Abo</li>
+              <li>▸ Midjourney</li>
+              <li>▸ Plausible</li>
+              <li>▸ Video und Auslieferung nach Verbrauch</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note"><b>Nimm KI-Video-Abos erst, wenn ein zahlender Auftrag sie verlangt</b> — und setz sie auf die Rechnung. Ein Monat Runway für ein Projekt ist eine Position im Angebot, kein Fixkostenblock.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Zusammen</b>Meine Rolle</div>
+      <div>
+        <h2>Wo ich dir auf dieser Linie helfen kann</h2>
+        <p>Framer, Spline, Rive und Figma sind geschlossene Cloud-Anwendungen — dort kann ich nicht klicken. Das heisst nicht, dass ich hier nichts beitrage; es verschiebt nur, <em>was</em>.</p>
+
+        <div class="kann-nicht">
+          <div>
+            <h3 class="ja">Übernehme ich</h3>
+            <ul>
+              <li>Alle Texte: Überschriften, Fliesstext, Knöpfe, Meta-Angaben</li>
+              <li>Struktur der Seite und Reihenfolge der Abschnitte</li>
+              <li>Farb- und Schriftsystem als fertige Werteliste zum Eintragen</li>
+              <li>Framer-Code-Komponenten in React, die du einfügst</li>
+              <li>Fertige HTML-Bausteine für Framers Embed-Element</li>
+              <li>Datenschutzerklärung und Impressum als Entwurf</li>
+              <li>Die Analyse-Berichte und den Akquise-Ablauf</li>
+              <li>Prüfen, was du gebaut hast — Messung, Barrierefreiheit, Handy</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="nein">Machst du</h3>
+            <ul>
+              <li>In Framer bauen und gestalten</li>
+              <li>In Spline modellieren</li>
+              <li>In Rive animieren</li>
+              <li>Abos abschliessen und Domains einrichten</li>
+              <li>Bilder auswählen und freistellen</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note"><b>Der praktische Weg:</b> Du schickst mir die Texte des Interessenten und einen Bildschirmfoto seiner alten Seite. Ich liefere Struktur, fertige Texte und die Farbwerte zurück. Du baust es in Framer zusammen. So dauert der erste Entwurf einen halben Tag statt zwei.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Übergang</b>Zur anderen Linie</div>
+      <div>
+        <h2>Wann du diese Linie verlassen solltest</h2>
+        <p>Nicht aus Ehrgeiz — sondern wenn eines dieser Zeichen auftritt:</p>
+        <div class="scroller">
+          <table>
+            <thead><tr><th>Zeichen</th><th>Was dann</th></tr></thead>
+            <tbody>
+              <tr><td>Der Kunde zeigt dir eine Awwwards-Seite</td><td>Das lässt sich in Framer nicht nachbauen. Code-Linie, und der Preis verdoppelt sich — zu Recht.</td></tr>
+              <tr><td>Drei oder mehr eingebettete 3D-Szenen</td><td>Jedes Embed lädt seine eigene Laufzeit. Ab hier ist eine gemeinsame Three.js-Szene schneller.</td></tr>
+              <tr><td>Shop mit Lager und Varianten</td><td>Webflow oder Shopify statt Framer — oder gleich Code.</td></tr>
+              <tr><td>Anbindung an ein bestehendes System</td><td>Immer Code-Linie.</td></tr>
+              <tr><td>Du baust dasselbe zum fünften Mal</td><td>Ab hier sparst du mit eigenen Bausteinen im Code mehr Zeit, als das Abo kostet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">Und der Fall, den du am häufigsten haben wirst: <b>beides gleichzeitig.</b> Die Kundenseite in Framer, damit er sie selbst pflegen kann — und ein Vorzeigestück im Code, mit dem du überhaupt erst ins Gespräch kommst.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Baukasten ohne Code · Linie A · Stand August 2026</span>
+    <span>Gegenstück: Baukasten mit Code</span>
+  </footer>
+
+</div>
