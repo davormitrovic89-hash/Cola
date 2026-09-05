@@ -1,0 +1,78 @@
+# MTVC Reel-Factory — zentrale Konfiguration.
+# Alles hier ist optional; nicht gesetzte Werte kommen aus reelfactory/config.py.
+
+brand:
+  name: MTVC
+  handle: "@mtvc"
+  primary: "#E0263A"      # Akzentfarbe (CTA)
+  secondary: "#FFCF40"    # Highlight-Farbe im Wort-für-Wort-Caption
+  text: "#FFFFFF"
+  font: "DejaVu Sans"     # Fontconfig-Name oder installierte Schrift, z. B. "Montserrat ExtraBold"
+  logo: null              # Pfad zu einem PNG mit Alpha, z. B. assets/mtvc-logo.png
+
+output:
+  width: 1080
+  height: 1920
+  fps: 30
+  crf: 20                 # kleiner = bessere Qualität, größere Datei
+  preset: veryfast
+  audio_bitrate: 160k
+  loudnorm: true          # auf -14 LUFS normalisieren (Plattform-Standard)
+
+reframe:
+  mode: crop              # crop = füllt das Bild | blur = Original + unscharfer Rand | pad = schwarze Balken
+  focus_x: 0.5            # 0 = links, 1 = rechts — wichtig, wenn die Person nicht mittig steht
+  focus_y: 0.5
+
+# Der Schnittplan. Segmente hinter dem Videoende werden automatisch verworfen,
+# ein überstehendes Segment wird gekürzt.
+segments:
+  - { name: hook,  start: 0,  end: 3 }
+  - { name: main,  start: 3,  end: 30 }
+  - { name: outro, start: 30, end: 45 }
+
+captions:
+  enabled: true
+  style: word             # word = Wort-für-Wort-Highlight | line = ganze Zeile
+  font_size: 76
+  max_words: 4
+  max_chars: 24
+  margin_v: 520           # Abstand von unten — hält die TikTok-/Reels-Bedienleiste frei
+  outline: 6
+  shadow: 2
+  uppercase: true
+  highlight: null         # null = brand.secondary
+
+overlays:
+  hook_text: null         # null = erste Caption-Zeile bzw. --hook
+  hook_font_size: 96
+  hook_margin_v: 1250
+  cta_text: null          # null = "Folge @mtvc"
+  cta_font_size: 64
+  cta_seconds: 5.0        # CTA in den letzten N Sekunden
+  cta_margin_v: 300
+  logo_height: 90
+  logo_margin: 60
+
+publish:
+  provider: dryrun        # dryrun | ayrshare | buffer | webhook
+  platforms: [instagram, tiktok, youtube]
+  hashtags:
+    - ki
+    - kipodcast
+    - mtvc
+    - automatisierung
+    - contentcreation
+  caption_template: "{hook}\n\n{body}\n\n{hashtags}"
+  media_url: null         # öffentliche URL des hochgeladenen MP4 (S3/R2/Bunny)
+  endpoint: null          # nur für provider: webhook
+  profile_ids: []         # nur für provider: buffer
+  schedule_at: null       # ISO-8601, null = sofort bzw. Buffer-Queue
+
+script:
+  model: claude-opus-5
+  language: de
+  target_seconds: 45
+  topic: null
+  audience: "Selbstständige und kleine Teams, die KI praktisch einsetzen wollen"
+  tone: "direkt, konkret, ohne Buzzwords"

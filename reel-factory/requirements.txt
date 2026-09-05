@@ -1,0 +1,10 @@
+# Pflicht
+PyYAML>=6.0
+requests>=2.31
+
+# Optional: Spracherkennung für exakte Caption-Timings (sonst --srt oder --script)
+# faster-whisper>=1.0
+
+# Optional: Skript-Generierung über die Claude API (reelctl.py script)
+# anthropic>=1.0
+# pydantic>=2.0

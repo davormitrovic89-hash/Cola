@@ -1,0 +1,8 @@
+out/
+scripts/
+assets/
+__pycache__/
+*.pyc
+.venv/
+*.mp4
+*.srt
