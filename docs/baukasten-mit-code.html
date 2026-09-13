@@ -1,0 +1,340 @@
+<title>Baukasten mit Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --paper:#E9EAE4; --surface:#F4F5F0; --sunk:#DFE0D9;
+    --ink:#16181A; --ink-soft:#565C60; --ink-faint:#878D8F;
+    --rule:#C7C9C1; --rule-soft:#D8DAD2;
+    --signal:#1F3BC4; --warn:#C41E25; --gut:#3F6B4A;
+    --f-display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+    --gut-raum: clamp(20px,4vw,56px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#101214; --surface:#181B1D; --sunk:#0B0D0E;
+      --ink:#E7E8E3; --ink-soft:#A0A6A8; --ink-faint:#6E7477;
+      --rule:#2E3336; --rule-soft:#23282A;
+      --signal:#8FA4FF; --warn:#FF4D52; --gut:#7FB58C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#101214; --surface:#181B1D; --sunk:#0B0D0E;
+    --ink:#E7E8E3; --ink-soft:#A0A6A8; --ink-faint:#6E7477;
+    --rule:#2E3336; --rule-soft:#23282A;
+    --signal:#8FA4FF; --warn:#FF4D52; --gut:#7FB58C;
+  }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 var(--gut-raum); }
+
+  .masthead { border-bottom:2px solid var(--ink); padding:clamp(44px,8vw,92px) 0 26px; }
+  .zeile { font-family:var(--f-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--signal); display:flex; gap:14px; flex-wrap:wrap; margin-bottom:clamp(22px,5vw,42px); }
+  .zeile .dim { color:var(--ink-faint); }
+  h1 { font-family:var(--f-display); font-weight:800; font-size:clamp(2.5rem,8vw,5.8rem); line-height:.95; letter-spacing:-.035em; margin:0 0 24px; text-wrap:balance; }
+  h1 em { font-style:normal; color:var(--signal); }
+  .vorspann { font-size:clamp(1.05rem,2.1vw,1.28rem); line-height:1.55; color:var(--ink-soft); max-width:52ch; margin:0; }
+
+  section { border-bottom:1px solid var(--rule); padding:clamp(44px,7vw,78px) 0; }
+  section:last-of-type { border-bottom:0; }
+  .band { display:grid; grid-template-columns:168px minmax(0,1fr); gap:clamp(20px,4vw,48px); align-items:start; }
+  @media (max-width:760px){ .band{ grid-template-columns:1fr; gap:18px; } }
+  .band-label { font-family:var(--f-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); position:sticky; top:24px; line-height:1.5; }
+  @media (max-width:760px){ .band-label{ position:static; } }
+  .band-label b { display:block; color:var(--signal); font-weight:600; }
+
+  h2 { font-family:var(--f-display); font-weight:700; font-size:clamp(1.6rem,3.6vw,2.5rem); line-height:1.06; letter-spacing:-.025em; margin:0 0 18px; text-wrap:balance; }
+  h3 { font-family:var(--f-display); font-weight:600; font-size:1.05rem; margin:0 0 8px; }
+  .band > div > p { max-width:62ch; }
+  p { margin:0 0 16px; } p:last-child { margin-bottom:0; }
+  strong { font-weight:600; }
+  code { font-family:var(--f-mono); font-size:.86em; }
+  .lede { font-size:1.12rem; color:var(--ink); }
+
+  .scroller { overflow-x:auto; margin-top:24px; border-top:1px solid var(--ink); }
+  table { width:100%; border-collapse:collapse; font-size:.92rem; min-width:660px; }
+  thead th { font-family:var(--f-mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint); text-align:left; font-weight:400; padding:12px 14px 12px 0; border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody td { padding:14px 14px 14px 0; border-bottom:1px solid var(--rule-soft); vertical-align:top; color:var(--ink-soft); }
+  tbody td:first-child { font-family:var(--f-mono); font-size:.86rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  tbody td.num { font-family:var(--f-mono); font-variant-numeric:tabular-nums; font-size:.83rem; color:var(--ink); white-space:nowrap; }
+  tbody tr:hover td { background:var(--surface); }
+  .pill { display:inline-block; font-family:var(--f-mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; padding:3px 7px; border:1px solid currentColor; white-space:nowrap; }
+  .pill.muss { color:var(--signal); }
+  .pill.frei { color:var(--gut); }
+  .pill.kann { color:var(--ink-faint); }
+  .pill.acht { color:var(--warn); }
+
+  .rollen { display:grid; gap:1px; background:var(--rule-soft); border-block:1px solid var(--rule-soft); margin-top:24px; }
+  .rolle { background:var(--paper); padding:22px 0; display:grid; grid-template-columns:11em minmax(0,1fr); gap:clamp(12px,3vw,30px); }
+  @media (max-width:700px){ .rolle{ grid-template-columns:1fr; gap:8px; } }
+  .rolle .was { font-family:var(--f-display); font-weight:600; font-size:1rem; }
+  .rolle .was span { display:block; font-family:var(--f-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:4px; font-weight:400; }
+  .rolle p { font-size:.96rem; color:var(--ink-soft); margin:0; }
+  .stapel { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .stapel span { font-family:var(--f-mono); font-size:11px; border:1px solid var(--rule); padding:5px 10px; color:var(--ink); }
+  .stapel span.neben { color:var(--ink-faint); border-style:dashed; }
+
+  .note { border-left:3px solid var(--signal); padding:4px 0 4px 18px; margin-top:24px; font-size:.96rem; color:var(--ink-soft); }
+  .note.achtung { border-left-color:var(--warn); }
+  .note b { color:var(--ink); font-weight:600; }
+
+  pre { background:var(--surface); border:1px solid var(--rule); padding:18px 20px; overflow-x:auto; margin:22px 0 0; font-family:var(--f-mono); font-size:12.5px; line-height:1.75; color:var(--ink); }
+  pre .k { color:var(--ink-faint); }
+
+  .kann-nicht { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1px; background:var(--rule-soft); border-block:1px solid var(--rule-soft); margin-top:22px; }
+  .kann-nicht > div { background:var(--paper); padding:18px 20px 18px 0; }
+  .kann-nicht h3 { font-size:.95rem; }
+  .kann-nicht h3.ja { color:var(--gut); }
+  .kann-nicht h3.nein { color:var(--warn); }
+  .kann-nicht ul { margin:0; padding-left:18px; font-size:.94rem; color:var(--ink-soft); line-height:1.7; }
+
+  .paare { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:24px; }
+  .paare > div { background:var(--surface); padding:22px 20px; }
+  .paare .tag { font-family:var(--f-mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:12px; }
+  .paare .summe { font-family:var(--f-display); font-weight:800; font-size:2.2rem; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; margin-bottom:10px; }
+  .paare .summe.klein { color:var(--gut); }
+  .paare .summe.gross { color:var(--signal); }
+  .paare ul { margin:12px 0 0; padding:0; list-style:none; font-family:var(--f-mono); font-size:11.5px; line-height:1.85; color:var(--ink-soft); }
+  .paare p { font-size:.92rem; color:var(--ink-soft); }
+
+  footer { border-top:1px solid var(--rule); padding:22px 0 46px; font-family:var(--f-mono); font-size:11px; letter-spacing:.05em; color:var(--ink-faint); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+
+  a { color:var(--ink); text-decoration-thickness:1px; text-underline-offset:2px; }
+  a:focus-visible { outline:2px solid var(--signal); outline-offset:3px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="zeile">
+      <span>Linie B — mit Code</span>
+      <span class="dim">Fast alles kostenlos</span>
+      <span class="dim">Preise: Richtwerte, Stand August 2026</span>
+    </div>
+    <h1>Alles, was du <em>mit Code</em> bauen kannst — und ich mit dir.</h1>
+    <p class="vorspann">Derselbe Werkzeugkasten, den die Studios hinter den Awwwards-Seiten benutzen. Der grosse Unterschied zur anderen Linie: hier kann ich die Arbeit tatsächlich mitmachen, nicht nur zuarbeiten.</p>
+  </header>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Zuerst</b>Der Unterschied</div>
+      <div>
+        <h2>Warum diese Linie mit mir zusammen günstiger ist</h2>
+        <p class="lede">Framer, Spline und Rive sind geschlossene Cloud-Anwendungen — dort kann ich nicht klicken. Code liegt als Dateien auf deinem Rechner. Die kann ich lesen, schreiben, ausführen und testen.</p>
+        <p>Praktisch heisst das: Du beschreibst, was die Seite tun soll. Ich baue es, starte es, sehe im Browser nach, ob es stimmt, messe die Ladezeit und veröffentliche es. Du prüfst das Ergebnis und sagst, was anders soll. Genau so sind in dieser Sitzung das Analyse-Werkzeug und die vier Hero-Vorlagen entstanden.</p>
+        <div class="note"><b>Deshalb stimmt meine erste Einschätzung nicht mehr:</b> Ich hatte die Code-Linie als die aufwendige dargestellt. Mit mir zusammen ist sie für dich oft die schnellere — und sie kostet fast nichts an Abos.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Grundlage</b>Auf deinem Laptop</div>
+      <div>
+        <h2>Was einmal installiert werden muss</h2>
+        <p>Vier Dinge, alle kostenlos, zusammen eine knappe Stunde. Danach ist der Rechner für jedes weitere Projekt bereit.</p>
+
+        <div class="scroller">
+          <table>
+            <thead><tr><th>Programm</th><th>Wofür</th><th>Preis</th><th>Nötig?</th></tr></thead>
+            <tbody>
+              <tr><td>Node.js</td><td>Führt alles aus, was gebaut wird. Die Grundlage, ohne die nichts läuft. LTS-Fassung nehmen.</td><td class="num">CHF 0</td><td><span class="pill muss">Pflicht</span></td></tr>
+              <tr><td>Git</td><td>Versionsverlauf. Jeder Schritt umkehrbar — die Versicherung dagegen, dass wir etwas kaputt machen.</td><td class="num">CHF 0</td><td><span class="pill muss">Pflicht</span></td></tr>
+              <tr><td>VS Code</td><td>Der Editor, in dem du siehst, was ich ändere.</td><td class="num">CHF 0</td><td><span class="pill muss">Pflicht</span></td></tr>
+              <tr><td>Claude Code</td><td>Ich, direkt in deinem Projektordner. Läuft im Terminal oder in VS Code.</td><td class="num">im Abo enthalten</td><td><span class="pill muss">Pflicht</span></td></tr>
+              <tr><td>GitHub</td><td>Sicherungskopie im Netz und die Verbindung zum Hosting. Privat und gratis.</td><td class="num">CHF 0</td><td><span class="pill frei">Gratis</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <pre><span class="k"># So sieht ein Projektstart bei dir aus — mehr ist es nicht:</span>
+mkdir kunde-mueller && cd kunde-mueller
+git init
+claude
+
+<span class="k"># Danach beschreibst du mir die Seite, und ich baue sie im Ordner.</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Stapel</b>Nach Rolle</div>
+      <div>
+        <h2>Der Werkzeugkasten, nach Aufgabe geordnet</h2>
+        <p>Keine Reihenfolge — je nach Projekt brauchst du drei davon oder alle. Gestrichelt umrandet heisst: nur bei Bedarf.</p>
+
+        <div class="rollen">
+          <div class="rolle">
+            <div class="was">Gerüst<span>die Seite selbst</span></div>
+            <div>
+              <p><strong>Next.js</strong> für alles mit mehreren Seiten, CMS oder Formularen. <strong>Vite</strong>, wenn es nur eine einzelne Seite ist — startet in Sekunden statt Minuten. <strong>TypeScript</strong> fängt Fehler ab, bevor die Seite überhaupt lädt.</p>
+              <div class="stapel"><span>Next.js</span><span>Vite</span><span>TypeScript</span><span>React</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Aussehen<span>Gestaltung im Code</span></div>
+            <div>
+              <p><strong>Tailwind</strong> schreibt die Gestaltung direkt neben den Inhalt — für uns beide schneller zu ändern. <strong>shadcn/ui</strong> liefert fertige, barrierefreie Bausteine (Knöpfe, Dialoge, Menüs), die du besitzt statt nur einbindest.</p>
+              <div class="stapel"><span>Tailwind CSS</span><span>shadcn/ui</span><span class="neben">Google Fonts (selbst gehostet)</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Bewegung<span>Animation</span></div>
+            <div>
+              <p><strong>GSAP</strong> ist die Animations-Engine hinter den meisten preisgekrönten Seiten — seit Webflow GreenSock gekauft hat, sind alle Zusatzmodule kostenlos, auch kommerziell: ScrollTrigger, SplitText, MorphSVG, DrawSVG. <strong>Lenis</strong> gibt der Seite den weichen, schweren Scroll, den du von Agenturseiten kennst: zwei Zeilen, grosse Wirkung.</p>
+              <div class="stapel"><span>GSAP + ScrollTrigger</span><span>SplitText</span><span>Lenis</span><span class="neben">Motion</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">3D<span>echte Räume</span></div>
+            <div>
+              <p><strong>Three.js</strong> ist die Engine, <strong>React Three Fiber</strong> macht sie in React bedienbar, <strong>drei</strong> liefert die Fertigteile (Kamera-Steuerung, Umgebungslicht, Schatten). <strong>Blender</strong> für eigene Modelle, <strong>Draco</strong> komprimiert sie auf ein Zehntel. Spline-Szenen lassen sich hierher exportieren — du kannst also in der einfachen Linie anfangen und hier weiterbauen.</p>
+              <div class="stapel"><span>Three.js</span><span>React Three Fiber</span><span>drei</span><span class="neben">Blender</span><span class="neben">glTF + Draco</span><span class="neben">Theatre.js</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Inhalte<span>damit der Kunde selbst pflegt</span></div>
+            <div>
+              <p>Ohne diesen Teil ruft dich der Kunde bei jeder Textänderung an. <strong>Sanity</strong> hat einen grosszügigen Gratis-Tarif und reicht für fast jedes KMU. <strong>Payload</strong>, wenn alles auf eigenem Server liegen soll. Für kleine Seiten reichen Markdown-Dateien im Projekt — dann gibt es gar kein System zu bezahlen.</p>
+              <div class="stapel"><span>Sanity</span><span class="neben">Payload</span><span class="neben">Markdown im Projekt</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Medien<span>Bilder und Video</span></div>
+            <div>
+              <p><strong>sharp</strong> rechnet beim Bauen jedes Bild automatisch in vier Grössen und nach AVIF/WebP — der Kunde lädt sein Kamerafoto hoch, ausgeliefert werden 80 Kilobyte. Video über <strong>Bunny Stream</strong> oder <strong>Mux</strong>, nie direkt eingebunden.</p>
+              <div class="stapel"><span>sharp</span><span class="neben">Bunny Stream</span><span class="neben">Mux</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Ausliefern<span>Hosting</span></div>
+            <div>
+              <p><strong>Cloudflare Pages</strong> ist für Kundenseiten die vernünftigste Wahl: unbegrenzte Datenmenge, auch im Gratis-Tarif. <strong>Netlify</strong> ist im Funktionsumfang am vollständigsten. <strong>Vercel</strong> hat die beste Vorschau-Funktion pro Version — aber siehe die Warnung unten.</p>
+              <div class="stapel"><span>Cloudflare Pages</span><span>Netlify</span><span class="neben">Vercel Pro</span></div>
+            </div>
+          </div>
+
+          <div class="rolle">
+            <div class="was">Prüfen<span>bevor der Kunde es sieht</span></div>
+            <div>
+              <p><strong>Playwright</strong> steuert einen echten Browser — damit läuft dein Analyse-Werkzeug, und damit prüfe ich jede Seite, bevor ich sie dir gebe. <strong>Lighthouse CI</strong> misst bei jeder Änderung automatisch nach und schlägt Alarm, wenn die Ladezeit schlechter wird.</p>
+              <div class="stapel"><span>Playwright</span><span>Lighthouse CI</span><span>dein audit.mjs</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note achtung"><b>Achtung bei Vercel:</b> Der Gratis-Tarif („Hobby“) ist laut Nutzungsbedingungen ausdrücklich <em>nicht</em> für kommerzielle Projekte zugelassen. Für Kundenseiten brauchst du dort Pro (~$20 im Monat) — oder du nimmst Cloudflare Pages, wo auch der Gratis-Tarif kommerziell erlaubt ist und die Datenmenge nicht begrenzt wird.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Kosten</b>Pro Monat</div>
+      <div>
+        <h2>Was diese Linie kostet</h2>
+        <p>Der Grund, warum sie sich mit mir zusammen rechnet: Fast der ganze Stapel ist quelloffen und kostenlos — auch kommerziell.</p>
+
+        <div class="paare">
+          <div>
+            <span class="tag">Übliches Kundenprojekt</span>
+            <div class="summe klein">0</div>
+            <p>Franken im Monat an Abos. Next.js, Tailwind, GSAP, Lenis, Three.js, sharp, Playwright, Sanity-Gratistarif und Cloudflare Pages kosten zusammen nichts.</p>
+          </div>
+          <div>
+            <span class="tag">Mit allem Komfort</span>
+            <div class="summe gross">~35</div>
+            <p>Franken im Monat, wenn Vorschau-Links pro Version und ein grösseres CMS dazukommen.</p>
+            <ul>
+              <li>▸ Vercel Pro ~$20</li>
+              <li>▸ Sanity Growth ~$15/Platz</li>
+              <li>▸ Video nach Verbrauch</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note">Was diese Linie stattdessen kostet, ist <b>Zeit</b> — Einrichtung, Fehlersuche, Feinschliff. Genau dieser Teil verschiebt sich zu mir. Deine Zeit geht in Kundengespräche, Texte und die Entscheidung, wie es aussehen soll.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Zusammen</b>Meine Rolle</div>
+      <div>
+        <h2>Was ich hier tatsächlich übernehme</h2>
+        <p>Der Unterschied zur anderen Linie ist nicht graduell, sondern grundsätzlich.</p>
+
+        <div class="kann-nicht">
+          <div>
+            <h3 class="ja">Mache ich vollständig</h3>
+            <ul>
+              <li>Projekt aufsetzen, Abhängigkeiten wählen und installieren</li>
+              <li>Die Seite schreiben — Aufbau, Gestaltung, Animationen, 3D</li>
+              <li>Im echten Browser starten und nachsehen, ob es stimmt</li>
+              <li>Ladezeit messen und optimieren, bis das Budget passt</li>
+              <li>Auf Handybreite, Tastaturbedienung und Barrierefreiheit prüfen</li>
+              <li>CMS anbinden, damit der Kunde selbst Texte ändert</li>
+              <li>Veröffentlichen und die Domain verbinden</li>
+              <li>Später ändern, ohne dass etwas anderes kaputtgeht</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="nein">Bleibt bei dir</h3>
+            <ul>
+              <li>Entscheiden, wie es aussehen und wirken soll</li>
+              <li>Konten anlegen und Zahlungsmittel hinterlegen</li>
+              <li>Fotos und Markenmaterial liefern</li>
+              <li>Den Kunden führen und das Angebot stellen</li>
+              <li>Prüfen, ob das Ergebnis stimmt — du bist die Abnahme</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note"><b>Belegt, nicht behauptet:</b> In dieser Sitzung sind bereits ein Playwright-Analysewerkzeug samt Berichtsgenerator und vier fertige Hero-Vorlagen entstanden — gemessen, im Browser geprüft, veröffentlicht. Beim Bauen sind mir dabei zwei eigene Fehler aufgefallen, die ich behoben habe, statt sie stehen zu lassen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <div class="band-label"><b>Wahl</b>Welche Linie wann</div>
+      <div>
+        <h2>Die Entscheidung pro Projekt</h2>
+        <p>Nicht ein Lager wählen, sondern pro Auftrag entscheiden. Diese fünf Fragen genügen:</p>
+
+        <div class="scroller">
+          <table>
+            <thead><tr><th>Frage</th><th>Ohne Code</th><th>Mit Code</th></tr></thead>
+            <tbody>
+              <tr><td>Wer pflegt die Texte danach?</td><td>Der Kunde selbst, im eingebauten Redaktionsteil</td><td>Der Kunde über ein angebundenes CMS — Einrichtung nötig</td></tr>
+              <tr><td>Wie schnell muss es stehen?</td><td>Entwurf in Stunden</td><td>Erstes Ergebnis in Stunden, fertige Seite in Tagen</td></tr>
+              <tr><td>Wie besonders soll es aussehen?</td><td>Sehr gut — bis zur Obergrenze dessen, was das Werkzeug kann</td><td>Ohne Obergrenze</td></tr>
+              <tr><td>Was kostet es laufend?</td><td>Abo pro Seite, dauerhaft</td><td>Hosting oft gratis, kein Abo pro Seite</td></tr>
+              <tr><td>Was, wenn du nicht mehr da bist?</td><td>Der Kunde behält das Projekt, braucht aber ein Framer-Konto</td><td>Der Kunde besitzt den Quelltext, jede Entwicklerin kann weitermachen</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note"><b>Mein Vorschlag, um beide auszuprobieren:</b> Nimm denselben Interessenten und bau seinen Hero zweimal — einmal in Framer nach meiner Vorlage, einmal von mir im Code. Gleicher Text, gleiche Farben. Danach vergleichst du drei Dinge: wie lange es gedauert hat, was die Messung sagt, und welche Fassung dir besser gefällt. Diese eine Übung beantwortet die Frage für die nächsten fünfzig Aufträge.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Baukasten mit Code · Linie B · Stand August 2026</span>
+    <span>Gegenstück: Baukasten ohne Code</span>
+  </footer>
+
+</div>

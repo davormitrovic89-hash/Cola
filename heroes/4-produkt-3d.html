@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero 4 — Produkt in 3D</title>
+<meta name="description" content="Hero-Vorlage: drehbares Produkt in echtem 3D, ohne Bibliothek und ohne Video.">
+<style>
+/* ===========================================================================
+   HERO 4 — PRODUKT IN 3D
+   Passt zu: Getränke, Kosmetik, Lebensmittel, Handel, Manufaktur — überall,
+   wo es ein greifbares Produkt gibt.
+   Wirkung: der stärkste "Wie haben Sie das gemacht?"-Moment im Repertoire.
+
+   Technik: ein Zylinder aus schmalen, gedrehten Flächen. Kein Video, keine
+   Bildsequenz, keine Bibliothek — jede Fläche ist ein echtes 3D-Element und
+   wird pro Bild neu beleuchtet. Der Besucher kann ziehen; sonst dreht es
+   sich von selbst und reagiert beim Scrollen.
+
+   Grenze, die du kennen solltest: CSS-3D kann keine echten Spiegelungen.
+   Wenn der Kunde Fotorealismus will (Glas, Chrom, Flüssigkeit), führt der
+   Weg über Three.js mit einer HDRI-Umgebung — dann aber mit Ladezeit und
+   deutlich mehr Aufwand.
+   =========================================================================== */
+:root {
+  --grund:    #0B0C10;
+  --schrift:  #F4F4F6;
+  --gedimmt:  #9A9BA3;
+  --akzent:   #E0263A;    /* Produktfarbe — auch für Knopf und Zierlinie */
+  --akzent-2: #FFCF40;    /* Zweitfarbe auf dem Etikett */
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--schrift);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  padding: clamp(80px, 12vh, 130px) clamp(22px, 6vw, 76px) clamp(40px, 8vh, 90px);
+  max-width: 1360px;
+  margin: 0 auto;
+  background:
+    radial-gradient(58% 58% at 78% 32%, rgba(224,38,58,.16), transparent 62%),
+    radial-gradient(48% 48% at 12% 82%, rgba(255,207,64,.09), transparent 62%);
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; text-align: left; }
+}
+
+.marke {
+  font-size: 11.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--akzent-2);
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+h1 {
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+  margin: 0 0 20px;
+  max-width: 13ch;
+  text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--akzent); }
+.unterzeile {
+  color: var(--gedimmt);
+  font-size: clamp(1rem, 1.8vw, 1.14rem);
+  line-height: 1.6;
+  max-width: 44ch;
+  margin: 0 0 30px;
+}
+.knoepfe { display: flex; gap: 13px; flex-wrap: wrap; }
+.knopf {
+  font: inherit; font-size: .93rem; font-weight: 700;
+  padding: 14px 28px; border-radius: 999px; border: 1px solid transparent;
+  text-decoration: none; cursor: pointer;
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s, border-color .25s;
+}
+.knopf.voll {
+  background: linear-gradient(135deg, var(--akzent), #ff5468);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(224,38,58,.32);
+}
+.knopf.leer { border-color: rgba(244,244,246,.28); color: var(--schrift); background: none; }
+.knopf:hover { transform: translateY(-2px); }
+.knopf:focus-visible { outline: 2px solid var(--schrift); outline-offset: 3px; }
+
+/* --- Die Bühne ------------------------------------------------------------
+   perspective bestimmt, wie stark die Verkürzung wirkt. Kleiner Wert =
+   dramatischer, aber auch verzerrter. 1100px ist ein ruhiger Kompromiss. */
+.buehne {
+  position: relative;
+  perspective: 1100px;
+  display: grid;
+  place-items: center;
+  min-height: min(72vh, 620px);
+  touch-action: pan-y;          /* senkrecht scrollen bleibt möglich */
+  cursor: grab;
+  user-select: none;
+}
+.buehne:active { cursor: grabbing; }
+
+.koerper {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.flaeche {
+  position: absolute;
+  top: 0; left: 50%;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+  background-size: var(--umfang) 100%;
+  /* Die beiden Innenschatten simulieren die Rundung an Deckel und Boden.
+     Ohne sie wirkt der Zylinder wie ein aufgerolltes Blatt Papier. */
+  box-shadow:
+    inset 0  13px 16px -9px rgba(0,0,0,.85),
+    inset 0 -16px 20px -9px rgba(0,0,0,.9);
+}
+
+/* Deckel und Boden als flachgedrückte Ellipsen. */
+.deckel, .boden {
+  position: absolute;
+  top: 0; left: 50%;
+  border-radius: 50%;
+}
+.deckel {
+  background: linear-gradient(150deg, #d8dade 0%, #9ea3ab 42%, #6f757e 100%);
+  box-shadow: inset 0 0 12px rgba(0,0,0,.45);
+}
+.boden { background: #15161b; }
+
+/* Glanzlicht: ein senkrechter heller Streifen, der NICHT mitdreht.
+   Genau das verkauft die Illusion einer Lichtquelle im Raum. */
+.glanz {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(255,255,255,.02) 26%, rgba(255,255,255,.20) 43%,
+    rgba(255,255,255,.30) 50%, rgba(255,255,255,.16) 58%, transparent 78%);
+  mix-blend-mode: screen;
+  border-radius: 40% / 6%;
+}
+
+.schatten {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(0,0,0,.62), transparent 76%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.bedienung {
+  margin-top: 26px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gedimmt);
+}
+.schalter {
+  font: inherit; font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  background: none; border: 1px solid rgba(244,244,246,.22); color: var(--gedimmt);
+  padding: 8px 15px; border-radius: 999px; cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.schalter:hover { color: var(--schrift); border-color: rgba(244,244,246,.5); }
+.schalter:focus-visible { outline: 2px solid var(--schrift); outline-offset: 3px; }
+
+.danach {
+  min-height: 60vh;
+  display: grid; place-items: center;
+  padding: 80px 24px;
+  color: var(--gedimmt);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Ohne Bewegung: das Produkt steht still, bleibt aber per Ziehen drehbar. */
+@media (prefers-reduced-motion: reduce) {
+  .knopf { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div>
+    <p class="marke" id="marke"></p>
+    <h1 id="titel"></h1>
+    <p class="unterzeile" id="unterzeile"></p>
+    <div class="knoepfe">
+      <a class="knopf voll" id="knopf1" href="#"></a>
+      <a class="knopf leer" id="knopf2" href="#"></a>
+    </div>
+  </div>
+
+  <div>
+    <div class="buehne" id="buehne">
+      <div class="koerper" id="koerper" role="img" aria-label=""></div>
+      <div class="glanz" id="glanz" aria-hidden="true"></div>
+      <div class="schatten" id="schatten" aria-hidden="true"></div>
+    </div>
+    <div class="bedienung">
+      <button class="schalter" id="schalter" type="button">Drehung anhalten</button>
+      <span>oder ziehen</span>
+    </div>
+  </div>
+</section>
+
+<div class="danach">Ab hier folgt der Rest der Seite.</div>
+
+<script>
+/* ===========================================================================
+   KONFIG
+   =========================================================================== */
+const KONFIG = {
+  marke:      "Manufaktur Zürich",
+  titel:      "Eine Dose, die sich *wirklich* dreht.",
+  unterzeile: "Kein Video, keine Bildsequenz — echtes 3D im Browser. Ziehen Sie daran.",
+  knopf1:     { text: "Produkt ansehen", ziel: "#produkt" },
+  knopf2:     { text: "Händler finden",  ziel: "#haendler" },
+
+  /* Beschreibung fürs Vorlesegerät — Pflicht, sobald das Produkt Inhalt ist. */
+  bildtext:   "Getränkedose der Manufaktur Zürich, drehbar",
+
+  produkt: {
+    hoehe:     360,     // Pixel
+    durchmesser: 132,   // Pixel
+    flaechen:  44,      // mehr = runder, aber teurer. 36–56 ist der Bereich.
+    etikett:   null,    // z. B. "bilder/etikett-abwicklung.png" (Seitenverhältnis: Umfang × Höhe)
+  },
+
+  autoDrehung: 0.32,    // Grad pro Bild. 0 = steht still.
+};
+
+/* --------------------------------------------------------------------------
+   Ab hier muss nichts mehr angefasst werden.
+   -------------------------------------------------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+$("marke").textContent = KONFIG.marke;
+$("titel").innerHTML = KONFIG.titel
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+  .replace(/\*(.+?)\*/g, "<em>$1</em>");
+$("unterzeile").textContent = KONFIG.unterzeile;
+$("knopf1").textContent = KONFIG.knopf1.text; $("knopf1").href = KONFIG.knopf1.ziel;
+$("knopf2").textContent = KONFIG.knopf2.text; $("knopf2").href = KONFIG.knopf2.ziel;
+
+const P = KONFIG.produkt;
+const koerper = $("koerper");
+koerper.setAttribute("aria-label", KONFIG.bildtext);
+
+const radius  = P.durchmesser / 2;
+const umfang  = Math.PI * P.durchmesser;
+/* Jede Fläche ist minimal breiter als nötig, sonst blitzen zwischen den
+   Flächen haarfeine Lücken durch — der klassische Fehler bei dieser Technik. */
+const breite  = (umfang / P.flaechen) + 1.2;
+
+koerper.style.width  = P.durchmesser + "px";
+koerper.style.height = P.hoehe + "px";
+
+/* Ohne echtes Etikett: eine gezeichnete Abwicklung, damit die Vorlage
+   eigenständig etwas hermacht. Mit Etikett gewinnt das Bild. */
+function etikettZeichnen() {
+  const c = document.createElement("canvas");
+  c.width = 1024; c.height = 512;
+  const x = c.getContext("2d");
+  const akzent  = getComputedStyle(document.documentElement).getPropertyValue("--akzent").trim();
+  const akzent2 = getComputedStyle(document.documentElement).getPropertyValue("--akzent-2").trim();
+
+  x.fillStyle = akzent;
+  x.fillRect(0, 0, c.width, c.height);
+
+  x.fillStyle = "rgba(0,0,0,.16)";
+  x.fillRect(0, c.height * 0.60, c.width, c.height * 0.06);
+  x.fillStyle = akzent2;
+  x.fillRect(0, c.height * 0.66, c.width, c.height * 0.022);
+
+  /* Der Markenname erscheint zweimal, damit er beim Drehen umläuft. */
+  x.fillStyle = "#fff";
+  x.font = "700 96px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+  x.textAlign = "center";
+  x.textBaseline = "middle";
+  const wort = (KONFIG.marke.split(/\s+/)[0] || "MARKE").toUpperCase();
+  x.fillText(wort, c.width * 0.25, c.height * 0.44);
+  x.fillText(wort, c.width * 0.75, c.height * 0.44);
+
+  x.font = "500 30px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+  x.fillStyle = "rgba(255,255,255,.72)";
+  x.fillText("33 cl", c.width * 0.25, c.height * 0.78);
+  x.fillText("33 cl", c.width * 0.75, c.height * 0.78);
+
+  return c.toDataURL("image/jpeg", 0.9);
+}
+const etikett = P.etikett || etikettZeichnen();
+
+/* --- Flächen anlegen ---------------------------------------------------- */
+const flaechen = [];
+for (let i = 0; i < P.flaechen; i++) {
+  const winkel = (360 / P.flaechen) * i;
+  const el = document.createElement("div");
+  el.className = "flaeche";
+  el.style.width  = breite + "px";
+  el.style.height = P.hoehe + "px";
+  el.style.setProperty("--umfang", umfang + "px");
+  el.style.backgroundImage = `url("${etikett}")`;
+  /* Jede Fläche zeigt genau ihren Ausschnitt der Etikett-Abwicklung. */
+  el.style.backgroundPosition = `${-(umfang / P.flaechen) * i}px 0`;
+  el.style.transform =
+    `translateX(-50%) rotateY(${winkel}deg) translateZ(${radius}px)`;
+  koerper.appendChild(el);
+  flaechen.push({ el, winkel });
+}
+
+/* --- Deckel und Boden --------------------------------------------------- */
+function kappe(klasse, y) {
+  const el = document.createElement("div");
+  el.className = klasse;
+  el.style.width = P.durchmesser + "px";
+  el.style.height = P.durchmesser + "px";
+  el.style.transform =
+    `translateX(-50%) translateY(${y}px) rotateX(90deg) translateZ(0)`;
+  koerper.appendChild(el);
+}
+kappe("deckel", -P.durchmesser / 2);
+kappe("boden", P.hoehe - P.durchmesser / 2);
+
+/* --- Glanz und Schatten ------------------------------------------------- */
+const glanz = $("glanz");
+glanz.style.width  = P.durchmesser * 1.02 + "px";
+glanz.style.height = P.hoehe + "px";
+/* Bewusst NICHT im rotierenden Körper: das Licht bleibt im Raum stehen,
+   während sich das Produkt darunter dreht. Genau das liest das Auge als
+   Reflexion. */
+
+const schatten = $("schatten");
+schatten.style.width  = P.durchmesser * 2.1 + "px";
+schatten.style.height = P.durchmesser * 0.42 + "px";
+/* Mitte des Schattens auf die Standfläche des Körpers legen. */
+schatten.style.bottom = `calc(50% - ${P.hoehe / 2 + P.durchmesser * 0.21}px)`;
+
+/* --- Drehung ------------------------------------------------------------ */
+const buehne = $("buehne");
+const schalter = $("schalter");
+const sanft = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let drehung = -22;
+let neigung = 9;
+let selbst  = !sanft && KONFIG.autoDrehung > 0;
+let zieht   = false, startX = 0, startY = 0, startDrehung = 0, startNeigung = 0;
+let sichtbar = true;
+
+/* Beleuchtung: Flächen, die zur Lichtquelle zeigen, werden heller. Ohne das
+   sieht der Zylinder aus wie ein flaches, gebogenes Bild. */
+function beleuchten() {
+  for (const f of flaechen) {
+    /* Winkel der Flächennormalen zur Blickrichtung, in Bogenmass. */
+    const phi = ((f.winkel + drehung) % 360) * Math.PI / 180;
+    const zurKamera = Math.cos(phi);
+    if (zurKamera < -0.08) {                 // Rückseite: gar nicht erst zeichnen
+      f.el.style.visibility = "hidden";
+      continue;
+    }
+    f.el.style.visibility = "visible";
+    /* Licht kommt von schräg oben links. */
+    const licht = Math.cos(phi + 0.55);
+    const helligkeit = 0.40 + Math.max(0, licht) * 0.78;
+    const glanzlicht = Math.pow(Math.max(0, licht), 22) * 0.5;
+    f.el.style.filter =
+      `brightness(${(helligkeit + glanzlicht).toFixed(3)}) saturate(${(0.82 + zurKamera * 0.30).toFixed(3)})`;
+  }
+  koerper.style.transform = `rotateX(${neigung}deg) rotateY(${drehung}deg)`;
+}
+
+function bild() {
+  if (!sichtbar) return;
+  if (selbst && !zieht) drehung += KONFIG.autoDrehung;
+  beleuchten();
+  requestAnimationFrame(bild);
+}
+
+/* Ziehen — Zeiger-Ereignisse decken Maus, Finger und Stift gemeinsam ab. */
+buehne.addEventListener("pointerdown", (e) => {
+  zieht = true;
+  startX = e.clientX; startY = e.clientY;
+  startDrehung = drehung; startNeigung = neigung;
+  buehne.setPointerCapture(e.pointerId);
+});
+buehne.addEventListener("pointermove", (e) => {
+  if (!zieht) return;
+  drehung = startDrehung + (e.clientX - startX) * 0.42;
+  neigung = Math.max(-26, Math.min(26, startNeigung - (e.clientY - startY) * 0.16));
+  if (sanft) beleuchten();
+});
+const loslassen = () => { zieht = false; };
+buehne.addEventListener("pointerup", loslassen);
+buehne.addEventListener("pointercancel", loslassen);
+
+schalter.addEventListener("click", () => {
+  selbst = !selbst;
+  schalter.textContent = selbst ? "Drehung anhalten" : "Drehung starten";
+  schalter.setAttribute("aria-pressed", String(!selbst));
+  if (selbst) requestAnimationFrame(bild);
+});
+if (sanft) {
+  selbst = false;
+  schalter.textContent = "Drehung starten";
+}
+
+/* Beim Scrollen mitdrehen — koppelt das Produkt an die Seite, ohne dass
+   der Besucher etwas tun muss. */
+let letztesY = window.scrollY;
+window.addEventListener("scroll", () => {
+  const delta = window.scrollY - letztesY;
+  letztesY = window.scrollY;
+  if (!zieht && !sanft) drehung += delta * 0.12;
+}, { passive: true });
+
+/* Ausserhalb des Sichtbereichs wird gar nicht gerechnet. */
+new IntersectionObserver(([e]) => {
+  sichtbar = e.isIntersecting;
+  if (sichtbar) requestAnimationFrame(bild);
+}, { threshold: 0 }).observe(buehne);
+
+beleuchten();
+requestAnimationFrame(bild);
+</script>
+</body>
+</html>

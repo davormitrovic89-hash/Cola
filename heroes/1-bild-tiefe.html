@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero 1 — Bild mit Tiefe</title>
+<meta name="description" content="Hero-Vorlage: Bildhintergrund mit Parallax-Ebenen und langsamem Zoom.">
+<style>
+/* ===========================================================================
+   HERO 1 — BILD MIT TIEFE
+   Passt zu: Handwerk, Architektur, Restaurant, Hotel, Garage, Praxis.
+   Wirkung: ruhig, wertig, sofort verständlich. Der sicherste Hero.
+
+   ANPASSEN: nur der KONFIG-Block unten im <script> und die vier Farbwerte
+   hier. Alles andere kann so bleiben.
+   =========================================================================== */
+:root {
+  --grund:  #0E1013;   /* Hintergrund hinter dem Bild */
+  --schrift:#F5F3EF;   /* Textfarbe auf dem Bild */
+  --akzent: #C8873B;   /* Knopf und Zierlinie — hier die Kundenfarbe rein */
+  --dunkel: #05070A;   /* Farbe des Abdunklers über dem Bild */
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--schrift);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* --- Bildebenen. Jede bewegt sich beim Scrollen unterschiedlich schnell --- */
+.ebene {
+  position: absolute;
+  inset: -8% -4%;
+  z-index: -3;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+.ebene.hinten  { z-index: -3; }
+.ebene.vorne   { z-index: -2; }
+
+/* Abdunkler: sorgt dafür, dass die Schrift auf JEDEM Foto lesbar bleibt.
+   Ohne den hier wird ein heller Himmel im Bild zur Textwüste. */
+.schleier {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, var(--dunkel) 0%, rgba(5,7,10,.72) 32%, rgba(5,7,10,.15) 68%, rgba(5,7,10,.45) 100%);
+}
+
+/* Feines Korn — nimmt dem Verlauf das Digitale. Kostet nichts. */
+.korn {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .16;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.inhalt {
+  position: relative;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(22px, 5vw, 64px) clamp(64px, 10vh, 128px);
+}
+
+.marke {
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--akzent);
+  margin: 0 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.marke::after {
+  content: "";
+  height: 1px;
+  width: clamp(40px, 8vw, 96px);
+  background: currentColor;
+  opacity: .5;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 7.2vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  margin: 0 0 22px;
+  max-width: 15ch;
+  text-wrap: balance;
+  text-shadow: 0 2px 40px rgba(0,0,0,.5);
+}
+
+.unterzeile {
+  font-size: clamp(1rem, 1.9vw, 1.22rem);
+  line-height: 1.55;
+  max-width: 46ch;
+  color: rgba(245,243,239,.82);
+  margin: 0 0 34px;
+}
+
+.knoepfe { display: flex; gap: 14px; flex-wrap: wrap; }
+.knopf {
+  font: inherit;
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding: 15px 30px;
+  border-radius: 2px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), background-color .25s, border-color .25s;
+}
+.knopf.voll { background: var(--akzent); color: #12100C; }
+.knopf.leer { border-color: rgba(245,243,239,.38); color: var(--schrift); }
+.knopf:hover { transform: translateY(-2px); }
+.knopf.leer:hover { border-color: var(--schrift); }
+.knopf:focus-visible { outline: 2px solid var(--schrift); outline-offset: 3px; }
+
+/* Auftritt beim Laden: gestaffelt, nicht alles gleichzeitig. */
+.auftritt { opacity: 0; transform: translateY(20px); }
+.geladen .auftritt {
+  opacity: 1;
+  transform: none;
+  transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1);
+}
+.geladen .auftritt:nth-child(1) { transition-delay: .10s; }
+.geladen .auftritt:nth-child(2) { transition-delay: .22s; }
+.geladen .auftritt:nth-child(3) { transition-delay: .34s; }
+.geladen .auftritt:nth-child(4) { transition-delay: .46s; }
+
+.hinweis {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(245,243,239,.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.hinweis i {
+  display: block;
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, rgba(245,243,239,.6), transparent);
+  animation: rutschen 2.4s ease-in-out infinite;
+}
+@keyframes rutschen {
+  0%, 100% { transform: scaleY(.4); transform-origin: top; opacity: .4; }
+  50%      { transform: scaleY(1);  transform-origin: top; opacity: 1; }
+}
+
+/* Was nach dem Hero kommt — nur damit das Scrollen etwas zu tun hat. */
+.danach {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 80px 24px;
+  color: rgba(245,243,239,.45);
+  font-size: 14px;
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ebene { transform: none !important; }
+  .auftritt { opacity: 1; transform: none; transition: none; }
+  .hinweis i { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="ebene hinten" data-tempo="0.16"></div>
+  <div class="ebene vorne"  data-tempo="0.38"></div>
+  <div class="schleier"></div>
+  <div class="korn" aria-hidden="true"></div>
+
+  <div class="inhalt">
+    <p class="marke auftritt" id="marke"></p>
+    <h1 class="auftritt" id="titel"></h1>
+    <p class="unterzeile auftritt" id="unterzeile"></p>
+    <div class="knoepfe auftritt">
+      <a class="knopf voll" id="knopf1" href="#"></a>
+      <a class="knopf leer" id="knopf2" href="#"></a>
+    </div>
+  </div>
+
+  <div class="hinweis" aria-hidden="true"><i></i>Weiter</div>
+</section>
+
+<div class="danach">Ab hier folgt der Rest der Seite.</div>
+
+<script>
+/* ===========================================================================
+   KONFIG — das Einzige, was pro Kunde geändert wird.
+   =========================================================================== */
+const KONFIG = {
+  marke:      "Schreinerei seit 1974 · Zürich",
+  titel:      "Möbel, die eine Generation länger halten.",
+  unterzeile: "Vom ersten Aufmass bis zur Montage alles aus einer Hand — in unserer eigenen Werkstatt in Zürich-Altstetten gefertigt.",
+  knopf1:     { text: "Termin vereinbaren", ziel: "#kontakt" },
+  knopf2:     { text: "Arbeiten ansehen",   ziel: "#referenzen" },
+
+  /* Eigene Fotos: Pfade eintragen, dann wird gezeichnetes Ersatzbild ersetzt.
+     Zwei Ebenen ergeben die Tiefe — "hinten" ist der Hintergrund (Raum,
+     Landschaft, Fassade), "vorne" ein freigestelltes PNG mit Alphakanal
+     (Werkstück, Person, Pflanze). Nur "hinten" gesetzt geht auch. */
+  bildHinten: null,   // z. B. "bilder/werkstatt.jpg"
+  bildVorne:  null,   // z. B. "bilder/hobel-freigestellt.png"
+};
+
+/* --------------------------------------------------------------------------
+   Ab hier muss nichts mehr angefasst werden.
+   -------------------------------------------------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+$("marke").textContent = KONFIG.marke;
+$("titel").textContent = KONFIG.titel;
+$("unterzeile").textContent = KONFIG.unterzeile;
+$("knopf1").textContent = KONFIG.knopf1.text;
+$("knopf1").href = KONFIG.knopf1.ziel;
+$("knopf2").textContent = KONFIG.knopf2.text;
+$("knopf2").href = KONFIG.knopf2.ziel;
+
+const ebeneHinten = document.querySelector(".ebene.hinten");
+const ebeneVorne  = document.querySelector(".ebene.vorne");
+
+/* Solange keine echten Fotos da sind: eine gezeichnete Ersatzgrafik, damit
+   die Vorlage nie mit kaputten Bildern dasteht. Sobald KONFIG.bildHinten
+   gesetzt ist, gewinnt das Foto. */
+function ersatzbild(breite, hoehe, toene, formen) {
+  const c = document.createElement("canvas");
+  c.width = breite; c.height = hoehe;
+  const x = c.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 0, hoehe);
+  toene.forEach((ton, i) => g.addColorStop(i / (toene.length - 1), ton));
+  x.fillStyle = g;
+  x.fillRect(0, 0, breite, hoehe);
+
+  for (let i = 0; i < formen; i++) {
+    const y = hoehe * (0.45 + (i / formen) * 0.6);
+    x.beginPath();
+    x.moveTo(0, y);
+    for (let px = 0; px <= breite; px += 40) {
+      x.lineTo(px, y - Math.sin((px / breite) * Math.PI * (1.4 + i * .5) + i) * hoehe * 0.07);
+    }
+    x.lineTo(breite, hoehe); x.lineTo(0, hoehe); x.closePath();
+    x.fillStyle = `rgba(6,9,13,${0.16 + i * 0.13})`;
+    x.fill();
+  }
+  return c.toDataURL("image/jpeg", 0.86);
+}
+
+ebeneHinten.style.backgroundImage =
+  `url("${KONFIG.bildHinten || ersatzbild(1600, 1000, ["#43566b", "#2b3949", "#131c26"], 4)}")`;
+if (KONFIG.bildVorne) {
+  ebeneVorne.style.backgroundImage = `url("${KONFIG.bildVorne}")`;
+}
+
+/* --- Parallax: Ebenen wandern beim Scrollen unterschiedlich schnell. ------
+   Bewusst über transform statt über background-position — nur transform
+   läuft auf der GPU und bleibt bei 60 Bildern pro Sekunde. */
+const ebenen = [...document.querySelectorAll(".ebene")];
+const sanft = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let mausX = 0, mausY = 0, laeuft = false;
+
+function zeichnen() {
+  laeuft = false;
+  const y = window.scrollY;
+  if (y > window.innerHeight * 1.2) return;   // ausserhalb des Bildes: nichts tun
+  for (const e of ebenen) {
+    const tempo = parseFloat(e.dataset.tempo);
+    e.style.transform =
+      `translate3d(${mausX * tempo * 22}px, ${(-y * tempo) + mausY * tempo * 14}px, 0) scale(${1 + tempo * .06})`;
+  }
+}
+function anstossen() {
+  if (!laeuft) { laeuft = true; requestAnimationFrame(zeichnen); }
+}
+
+if (!sanft) {
+  window.addEventListener("scroll", anstossen, { passive: true });
+  window.addEventListener("pointermove", (e) => {
+    mausX = (e.clientX / window.innerWidth) * 2 - 1;
+    mausY = (e.clientY / window.innerHeight) * 2 - 1;
+    anstossen();
+  }, { passive: true });
+  zeichnen();
+}
+
+/* --- Korn: ein kleines Rauschbild wird gekachelt, statt eine grosse Textur
+   zu laden. Kostet rund 8 KB im Speicher und null Netzwerk. --- */
+(function korn() {
+  const kachel = document.createElement("canvas");
+  const s = 128;
+  kachel.width = s; kachel.height = s;
+  const x = kachel.getContext("2d");
+  const bild = x.createImageData(s, s);
+  for (let i = 0; i < bild.data.length; i += 4) {
+    const w = 90 + Math.random() * 150;
+    bild.data[i] = bild.data[i + 1] = bild.data[i + 2] = w;
+    bild.data[i + 3] = 255;
+  }
+  x.putImageData(bild, 0, 0);
+  const flaeche = document.querySelector(".korn");
+  flaeche.style.backgroundImage = `url("${kachel.toDataURL("image/png")}")`;
+  flaeche.style.backgroundRepeat = "repeat";
+})();
+
+requestAnimationFrame(() => document.body.classList.add("geladen"));
+</script>
+</body>
+</html>
