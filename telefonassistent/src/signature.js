@@ -3,6 +3,9 @@
 //   Header-Wert "v=<timestamp_ms>,d=<hex(HMAC-SHA256(apiKey, body + timestamp))>",
 //   Toleranz 5 Minuten. Bewusst ohne SDK-Abhängigkeit, damit der Server
 //   nur Node-Bordmittel braucht. Bei SDK-Updates gegen dessen Code abgleichen.
+// Gegen offizielle Doku geprüft am 12.10.2026:
+// https://docs.retellai.com/features/secure-webhook
+// body muss der unveränderte Request-Text sein; kein JSON.stringify nach dem Parsen.
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 export const SIGNATURE_HEADER = 'x-retell-signature';

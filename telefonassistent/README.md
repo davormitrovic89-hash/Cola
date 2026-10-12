@@ -80,7 +80,7 @@ Der Vertrag entspricht dem Startpaket mit drei Ergänzungen:
 
 1. Unternehmenswissen in `wissen/catering/unternehmen.json` bestätigen: Wert, `status: "freigegeben"`, Quelle und Freigabedatum.
 2. Retell-Konto anlegen. Den Schlüssel nur in `.env` eintragen, nicht in den Chat.
-3. Die offenen Prüfpunkte in `retell/einstellungen.md` gegen die aktuelle Doku abhaken.
+3. Den Dokumentationsabgleich in `retell/einstellungen.md` lesen: Signatur und Datenformat sind bestätigt; echte Verbindung, Fehlerreaktionen und Speichereinstellungen bleiben zu testen. `RETELL_API_KEY` muss für Webhooks der im Dashboard markierte Signaturschlüssel sein.
 4. Hosting wählen: Node mit persistentem Speicher für `data/`. Dann die Funktions-URL setzen und die Agent-ID in `config/tenants.json` eintragen.
 5. Browser-Sprachtest durchführen und Stimme und Modell nach Hörtest festlegen. Die Gesprächstests in `tests/gespraechstests.md` protokollieren.
 6. Interne Empfängeradresse festlegen. Dann den Benachrichtigungsadapter ergänzen (aktuell nur Vorschau).

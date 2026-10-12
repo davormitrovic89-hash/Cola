@@ -114,6 +114,36 @@ test('fehlende oder falsche Signatur wird abgelehnt', async () => {
   assert.equal(store.listInquiries('catering').length, 0);
 });
 
+test('Function und Webhook akzeptieren korrekt signierten Rohtext mit Whitespace', async () => {
+  const requests = [
+    [FN, { name: 'save_catering_inquiry', call: call(), args: confirmed }, 200],
+    ['/t/catering/retell/webhook', { event: 'call_ended', call: call() }, 204],
+  ];
+  for (const [path, body, expected] of requests) {
+    const raw = JSON.stringify(body, null, 2) + '\n';
+    assert.equal((await post(path, body, { raw })).status, expected);
+  }
+  assert.equal(store.listInquiries('catering').length, 1);
+});
+
+test('Function und Webhook lehnen Signaturen einer anderen JSON-Serialisierung ab', async () => {
+  const requests = [
+    [FN, { name: 'save_catering_inquiry', call: call(), args: confirmed }],
+    ['/t/catering/retell/webhook', { event: 'call_ended', call: call() }],
+  ];
+  for (const [path, body] of requests) {
+    const signature = sign(JSON.stringify(body), KEY);
+    const res = await fetch(base + path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-retell-signature': signature },
+      body: JSON.stringify(body, null, 2),
+    });
+    assert.equal(res.status, 401);
+  }
+  assert.equal(store.listInquiries('catering').length, 0);
+  assert.equal(store.callsWithoutInquiry('catering').length, 0);
+});
+
 test('falscher Mandant oder manipulierte Anfrage wird serverseitig abgelehnt', async () => {
   // Agent eines anderen Mandanten auf dem Catering-Pfad
   let res = await post(FN, { call: call('c', 'agent_andere'), args: confirmed });

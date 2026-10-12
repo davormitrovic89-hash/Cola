@@ -48,22 +48,22 @@ export function createApp({ store, tenants, apiKey, adapters, allowUnsignedLocal
     if (!tenant) throw new HttpError(404, { fehler: 'unbekannter_mandant' });
 
     const raw = await readBody(req);
+    const signature = req.headers[SIGNATURE_HEADER];
+    let signed = false;
+    if (signature) {
+      // Retell signiert ausschliesslich den unveränderten Request-Body.
+      // Keine alternative JSON-Serialisierung akzeptieren (Retell-Doku 12.10.2026).
+      signed = verify(raw, apiKey, signature);
+      if (!signed) throw new HttpError(401, { fehler: 'signatur_ungueltig' });
+    } else if (!(allowUnsignedLocal && LOOPBACK.has(req.socket.remoteAddress))) {
+      throw new HttpError(401, { fehler: 'signatur_fehlt' });
+    }
+
     let body;
     try {
       body = JSON.parse(raw);
     } catch {
       throw new HttpError(400, { fehler: 'kein_json' });
-    }
-
-    const signature = req.headers[SIGNATURE_HEADER];
-    let signed = false;
-    if (signature) {
-      // Retell signiert den JSON-Body; zusätzlich die kompakte Serialisierung
-      // akzeptieren, falls Whitespace abweicht. Beides erfordert den Schlüssel.
-      signed = verify(raw, apiKey, signature) || verify(JSON.stringify(body), apiKey, signature);
-      if (!signed) throw new HttpError(401, { fehler: 'signatur_ungueltig' });
-    } else if (!(allowUnsignedLocal && LOOPBACK.has(req.socket.remoteAddress))) {
-      throw new HttpError(401, { fehler: 'signatur_fehlt' });
     }
 
     const call = body?.call;
