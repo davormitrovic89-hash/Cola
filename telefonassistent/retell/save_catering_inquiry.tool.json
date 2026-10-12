@@ -1,0 +1,40 @@
+{
+  "_hinweis": "Custom-Function-Definition für Retell (Felder gemäss retell-sdk 6.2.5, Typ LlmResponse.CustomTool). url nach Wahl des Hostings ersetzen. tenant_id, call_id und status sind bewusst KEINE Parameter: der Server setzt sie selbst.",
+  "type": "custom",
+  "name": "save_catering_inquiry",
+  "description": "Speichert eine Cateringanfrage oder einen Rückrufwunsch für das Team. Erst aufrufen, nachdem die anrufende Person die zusammengefasste Anfrage ausdrücklich bestätigt hat. Unbekannte Angaben weglassen oder null setzen, nichts erfinden.",
+  "url": "https://HOST_OFFEN/t/catering/retell/functions/save_catering_inquiry",
+  "method": "POST",
+  "args_at_root": false,
+  "speak_during_execution": true,
+  "execution_message_type": "static_text",
+  "execution_message_description": "Einen kleinen Moment bitte.",
+  "speak_after_execution": true,
+  "timeout_ms": 10000,
+  "max_retry": 1,
+  "parameter_type": "json",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "intent": {
+        "type": "string",
+        "enum": ["new_inquiry", "existing_order", "general_question", "callback"],
+        "description": "Art des Anliegens."
+      },
+      "event_type": { "type": ["string", "null"], "description": "Anlass, z. B. Firmenapéro, Hochzeit." },
+      "event_date": { "type": ["string", "null"], "description": "Nur bei eindeutig bestätigtem Datum mit Jahr, Format YYYY-MM-DD. Sonst null." },
+      "event_date_raw": { "type": ["string", "null"], "description": "Datum wörtlich wie genannt, z. B. 'nächsten Freitag'." },
+      "location": { "type": ["string", "null"], "description": "Ort der Veranstaltung." },
+      "guest_count": { "type": ["integer", "null"], "description": "Ungefähre Gästezahl als ganze Zahl." },
+      "requested_services": { "type": "array", "items": { "type": "string" }, "description": "Gewünschte Leistungen, soweit bekannt." },
+      "budget_text": { "type": ["string", "null"], "description": "Freiwillig genanntes Budget, wörtlich." },
+      "contact_name": { "type": ["string", "null"], "description": "Name in der zuletzt korrigierten Form." },
+      "callback_number": { "type": ["string", "null"], "description": "Von der Person genannte und zurückgelesene Rückrufnummer, wörtlich. Nicht aus der Anruferkennung ableiten." },
+      "preferred_callback_time": { "type": ["string", "null"], "description": "Gewünschte Rückrufzeit, wörtlich. Keine Zusage." },
+      "summary": { "type": ["string", "null"], "description": "Kurze Zusammenfassung, bei bestehenden Aufträgen der Änderungs- oder Stornowunsch. Keine Diagnosen." },
+      "declined_fields": { "type": "array", "items": { "type": "string" }, "description": "Feldnamen, die die Person ausdrücklich nicht angeben wollte." },
+      "caller_confirmed": { "type": "boolean", "description": "true nur, wenn die Person die Zusammenfassung ausdrücklich bestätigt hat." }
+    },
+    "required": ["intent", "caller_confirmed"]
+  }
+}

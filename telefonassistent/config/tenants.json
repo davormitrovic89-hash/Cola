@@ -1,0 +1,10 @@
+{
+  "_hinweis": "Serverseitige Mandantenkonfiguration. Der Mandant wird aus der URL UND der signierten agent_id bestimmt – nie aus Angaben des Sprachmodells. retell_agent_ids nach Anlegen des Agenten eintragen (keine Geheimnisse, nur IDs).",
+  "catering": {
+    "wissen": "wissen/catering/unternehmen.json",
+    "retell_agent_ids": [],
+    "benachrichtigung": {
+      "adapter": "vorschau"
+    }
+  }
+}

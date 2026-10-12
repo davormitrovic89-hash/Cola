@@ -1,0 +1,113 @@
+{
+  "_hinweis": "Freigegebenes Unternehmenswissen für den Mandanten 'catering'. Nur Einträge mit status 'freigegeben' UND Quelle UND Freigabedatum gelangen in den Prompt bzw. die Wissensbasis. 'oeffentlich: false' gelangt nie in die für Anrufende abrufbare Wissensbasis. Unbekannte Werte bleiben null. Keine internen Kalkulationen hier eintragen.",
+  "schema_version": 1,
+  "tenant_id": "catering",
+  "fakten": {
+    "firmenname": {
+      "frage": "Freigegebener Firmenname",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true,
+      "notiz": "Arbeitsstand 'S&D Catering GmbH' aus Gesprächskontext – Bezeichnung und Rechtsform vor Verwendung bestätigen."
+    },
+    "website": {
+      "frage": "Website",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "leistungen": {
+      "frage": "Leistungen und Veranstaltungsarten",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "einsatzgebiet": {
+      "frage": "Einsatzgebiet",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "gaestezahl_min_max": {
+      "frage": "Mindest-/Maximalgrösse",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "vorlaufzeit": {
+      "frage": "Vorlaufzeit",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "erreichbarkeit_team": {
+      "frage": "Erreichbarkeit des Teams (hinterlegter Kontaktweg für Anrufende)",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "rufnummer": {
+      "frage": "Rufnummer: bestehend oder neu",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": false
+    },
+    "rueckrufziel": {
+      "frage": "Rückrufziel / zuständige Person",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": false
+    },
+    "interne_adresse": {
+      "frage": "Adresse für interne Anfragen (Benachrichtigungsempfänger)",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": false
+    },
+    "sprachen": {
+      "frage": "Freigegebene Sprachen",
+      "wert": "Hochdeutsch; Schweizerdeutsch gezielt testen",
+      "status": "vorschlag",
+      "quelle": "Startpaket 12.10.2026",
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "preisregel": {
+      "frage": "Regeln zu Preisen",
+      "wert": "Preise ausschliesslich als individuelles Angebot durch das Team.",
+      "status": "vorschlag",
+      "quelle": "Startpaket 12.10.2026",
+      "freigabedatum": null,
+      "oeffentlich": true
+    },
+    "rueckruffrist": {
+      "frage": "Rückruffrist",
+      "wert": null,
+      "status": "offen",
+      "quelle": null,
+      "freigabedatum": null,
+      "oeffentlich": true,
+      "notiz": "Bis zur Freigabe keine Frist versprechen."
+    }
+  }
+}

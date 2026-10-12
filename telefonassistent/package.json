@@ -1,0 +1,21 @@
+{
+  "name": "telefonassistent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KI-Telefonassistent Catering – eigene Integration für Retell (Pilot, nicht produktiv)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning src/server.js",
+    "dev": "ALLOW_UNSIGNED_LOCAL=1 node --env-file-if-exists=.env --disable-warning=ExperimentalWarning --watch src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test 'test/*.test.js'",
+    "wissen": "node scripts/wissen.js",
+    "wissen:export": "node scripts/wissen.js --export",
+    "prompt": "node scripts/prompt.js",
+    "prompt:entwurf": "node scripts/prompt.js --entwurf",
+    "anfragen": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning scripts/anfragen.js",
+    "test-anfrage": "node --env-file-if-exists=.env scripts/test-anfrage.js"
+  }
+}
